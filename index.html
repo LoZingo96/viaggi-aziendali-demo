@@ -1,0 +1,1272 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Demo siti per viaggi aziendali</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23dd4a16'/%3E%3Cpath d='M19 5 5 10.8l5.4 2 2 5.4L19 5z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* =====================================================================
+   PANNELLO DELL'AGENZIA
+   ===================================================================== */
+:root{
+  --a-bg:#eef0f5; --a-surface:#fff; --a-ink:#111827; --a-muted:#5f6b7c; --a-line:#dfe3ea;
+  --a-dark:#0e1630; --a-accent:#dd4a16;
+  --ok:#136c41; --ok-bg:#dcf3e6; --warn:#8f5200; --warn-bg:#fdeccb;
+  --client:#0b4f9e; --client-on:#fff;
+  --ui:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{height:100dvh;margin:0;background:var(--a-bg);color:var(--a-ink);font:15px/1.5 var(--ui);display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--a-accent);outline-offset:2px}
+
+.top{background:var(--a-dark);color:#fff;display:flex;align-items:center;flex-wrap:wrap;gap:6px 28px;padding:0 20px;min-height:58px;flex:none}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.02rem;color:#fff;text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px;padding:6px;border-radius:8px;background:var(--a-accent);fill:#fff}
+.brand em{font:700 .64rem var(--ui);letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:3px 7px;border-radius:5px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{color:#c5cbe0;text-decoration:none;font-weight:600;font-size:.92rem;padding:8px 14px;border-radius:9px;white-space:nowrap;display:flex;align-items:center}
+.tabs b{margin-left:8px}
+.tabs a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tabs a[aria-current=page]{background:#fff;color:var(--a-dark)}
+.tabs b{font-size:.72rem;font-weight:700;background:rgba(255,255,255,.16);padding:1px 7px;border-radius:99px;font-variant-numeric:tabular-nums}
+.tabs a[aria-current=page] b{background:var(--a-bg)}
+@media (max-width:720px){.top{padding:0 14px;gap:6px 10px}.tabs a{padding:7px 11px}.brand em{display:none}}
+
+main{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+
+/* --- scheda + anteprima --- */
+.builder{display:grid;grid-template-columns:412px minmax(0,1fr);height:100%}
+.form{background:var(--a-surface);border-right:1px solid var(--a-line);overflow:auto;padding:6px 20px 28px}
+.stage{display:flex;flex-direction:column;gap:12px;padding:16px 20px 20px;min-width:0;min-height:0;background:radial-gradient(circle at 1px 1px,#d3d8e3 1px,transparent 0) 0 0/18px 18px,var(--a-bg)}
+.stagebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.url{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--a-line);border-radius:99px;padding:8px 14px;font-size:.85rem;color:var(--a-muted);overflow:hidden}
+.url svg{width:14px;height:14px;flex:none}
+.url span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.url b{color:var(--a-ink);font-weight:600}
+.frame{flex:1;min-height:0;width:100%;margin-inline:auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 60px -28px rgba(14,22,48,.45),0 0 0 1px var(--a-line)}
+.frame[data-device=phone]{width:402px;max-width:100%;border-radius:38px;margin-block:10px;box-shadow:0 0 0 10px var(--a-dark),0 30px 60px -20px rgba(14,22,48,.5)}
+.host,.site-scroll,.full{height:100%}
+.site-scroll{overflow:auto;overscroll-behavior:contain}
+
+.grp{border-bottom:1px solid var(--a-line)}
+.grp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 0;font-weight:800;font-size:.98rem}
+.grp>summary::-webkit-details-marker{display:none}
+.grp>summary small{font-weight:500;color:var(--a-muted);font-size:.8rem;flex:1;text-align:right}
+.grp>summary::after{content:"";flex:none;width:8px;height:8px;border-right:2px solid var(--a-muted);border-bottom:2px solid var(--a-muted);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s;margin:0 4px 0 auto}
+.grp[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:20px}
+.fields .w2{grid-column:1/-1}
+.f{display:flex;flex-direction:column;gap:5px;font-size:.78rem;font-weight:700;color:var(--a-muted);min-width:0}
+.f input:not([type=color]),.f select,.f textarea{font-weight:500;font-size:.92rem;color:var(--a-ink);background:#f6f7fa;border:1px solid var(--a-line);border-radius:10px;padding:9px 11px;width:100%;min-width:0}
+.f textarea{min-height:112px;resize:vertical;line-height:1.45}
+.hint{font-weight:500;font-size:.78rem;color:var(--a-muted);margin:0}
+.lbl{font-size:.78rem;font-weight:700;color:var(--a-muted);margin:0 0 6px}
+
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stylecard{position:relative;display:flex;flex-direction:column;gap:6px;font-size:.82rem;font-weight:700;cursor:pointer;text-align:center}
+.stylecard input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.sw{height:64px;border-radius:12px;display:grid;place-items:center;border:2px solid var(--a-line);font-size:1.55rem;line-height:1}
+.stylecard input:checked+.sw{border-color:var(--a-ink);box-shadow:0 0 0 2px #fff inset}
+.stylecard input:focus-visible+.sw{outline:2px solid var(--a-accent);outline-offset:2px}
+.sw-classico{background:linear-gradient(180deg,#93a0b3,#1b2230);color:#fff;font-family:"Fraunces",Georgia,serif}
+.sw-moderno{background:color-mix(in srgb,var(--client) 12%,#fff);font-weight:800;letter-spacing:-.04em}
+.sw-deciso{background:var(--client);color:var(--client-on);font-family:"Bricolage Grotesque",var(--ui);font-weight:800;text-transform:uppercase}
+
+.colors{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.swatch{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--a-line);cursor:pointer;padding:0}
+.swatch[aria-pressed=true]{box-shadow:0 0 0 2px var(--a-ink)}
+input[type=color]{width:46px;height:32px;padding:2px;border-radius:8px;border:1px solid var(--a-line);background:#fff;cursor:pointer}
+.covers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cover{aspect-ratio:4/3;border-radius:10px;border:2px solid transparent;padding:0;cursor:pointer;background:#e3e7ef center/cover}
+.cover[aria-pressed=true]{border-color:var(--a-ink);box-shadow:0 0 0 2px #fff inset}
+.cover.up{display:grid;place-items:center;border:2px dashed #c3cad6;font-size:.74rem;font-weight:700;color:var(--a-muted);text-align:center;background:#f6f7fa}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.checks{display:flex;flex-direction:column;gap:10px;padding-bottom:20px}
+.checks label{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.92rem;cursor:pointer}
+.checks input{width:18px;height:18px;accent-color:var(--a-dark)}
+.note{font-size:.8rem;color:var(--a-muted);margin:18px 0 0}
+.intro{margin:14px 0 0;font-size:.9rem;color:var(--a-muted)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:.9rem;border-radius:10px;padding:10px 16px;border:1px solid transparent;background:var(--a-accent);color:#fff;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:#fff;color:var(--a-ink);border-color:var(--a-line)}
+.btn.dark{background:var(--a-dark)}
+.btn.sm{padding:7px 12px;font-size:.84rem}
+.btn:disabled{opacity:.5;cursor:default;filter:none}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--a-line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;font-weight:700;font-size:.82rem;padding:6px 12px;border-radius:7px;cursor:pointer;color:var(--a-muted)}
+.seg button[aria-pressed=true]{background:var(--a-dark);color:#fff}
+
+.mini{display:none}
+@media (max-width:900px){
+  .builder{display:block;height:auto}
+  .form{border:0;overflow:visible;padding-inline:16px}
+  .stage{display:none}
+  .mini{display:flex;flex-direction:column;justify-content:flex-end;gap:4px;position:relative;isolation:isolate;border-radius:16px;overflow:hidden;color:#fff;margin:14px 0 4px;min-height:200px;padding:18px;background:#223 center/cover}
+  .mini::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,14,25,.5),rgba(10,14,25,.86))}
+  .mini small{font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+  .mini strong{font-size:1.45rem;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+  .mini span{font-size:.9rem;opacity:.95}
+  .mini .btn{margin-top:10px;align-self:flex-start}
+}
+
+/* --- iscritti e rooming list --- */
+.page{max-width:1120px;margin:0 auto;padding:28px 20px 64px;display:flex;flex-direction:column;gap:18px}
+.pagehead{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+.pagehead h2{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.2}
+.pagehead p{color:var(--a-muted);margin:4px 0 0;max-width:62ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:#fff;border:1px solid var(--a-line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:2px}
+.stat span{font-size:.74rem;font-weight:700;color:var(--a-muted);text-transform:uppercase;letter-spacing:.06em}
+.stat b{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.25}
+.stat small{color:var(--a-muted);font-size:.84rem}
+.bar{height:6px;border-radius:9px;background:var(--a-bg);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ok)}
+.card{background:#fff;border:1px solid var(--a-line);border-radius:14px;overflow:hidden}
+.cardhead{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--a-line)}
+.cardhead h3{margin:0;font-size:1.02rem;font-weight:800}
+.cardhead p{margin:2px 0 0;color:var(--a-muted);font-size:.85rem}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:11px 18px;border-bottom:1px solid var(--a-line);white-space:nowrap}
+th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--a-muted);background:#fafbfc;font-weight:700}
+tr:last-child td{border-bottom:0}
+td small{display:block;color:var(--a-muted);font-size:.8rem}
+.pill{font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:99px;display:inline-block}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.new{background:var(--a-dark);color:#fff;margin-left:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--a-line);background:#fff;border-radius:99px;padding:5px 12px;font-size:.82rem;font-weight:700;color:var(--a-muted);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--a-dark);border-color:var(--a-dark);color:#fff}
+.tag{border:1px solid var(--a-line);border-radius:99px;padding:4px 11px;font-size:.82rem;font-weight:600;background:#fafbfc}
+
+dialog{border:0;border-radius:16px;padding:0;width:min(560px,calc(100vw - 32px));box-shadow:0 30px 80px -20px rgba(14,22,48,.6);color:var(--a-ink)}
+dialog::backdrop{background:rgba(14,22,48,.55)}
+.dlg{padding:22px;display:flex;flex-direction:column;gap:14px}
+.dlg h3{margin:0;font-size:1.15rem;font-weight:800}
+.dlg p{margin:0}
+.mail{background:#f6f7fa;border:1px solid var(--a-line);border-radius:12px;padding:14px 16px;font-size:.92rem;display:flex;flex-direction:column;gap:8px}
+.mail .meta{color:var(--a-muted);font-size:.82rem}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--a-dark);color:#fff;padding:11px 18px;border-radius:12px;font-size:.9rem;font-weight:600;max-width:calc(100% - 32px);z-index:50;box-shadow:0 14px 40px -12px rgba(14,22,48,.6)}
+
+/* =====================================================================
+   SITO GENERATO PER GLI INVITATI (tre stili sullo stesso contenuto)
+   ===================================================================== */
+.site{
+  --s-accent:#0b4f9e; --s-on:#fff;
+  --s-accent-ink:color-mix(in srgb,var(--s-accent) 82%,#000);
+  --s-accent-light:color-mix(in srgb,var(--s-accent) 45%,#fff);
+  --s-tint:color-mix(in srgb,var(--s-accent) 8%,#fff);
+  --s-bg:#fff; --s-soft:#f5f6f8; --s-ink:#14171c; --s-muted:#59626f; --s-line:#e3e6eb;
+  --s-r:4px; --s-btn-r:6px;
+  --s-display:"Fraunces",Georgia,"Times New Roman",serif; --s-hw:400; --s-ht:-.02em;
+  container:site/inline-size;
+  background:var(--s-bg);color:var(--s-ink);font:400 16px/1.65 var(--ui);
+}
+.site h1,.site h2,.site h3{font-family:var(--s-display);font-weight:var(--s-hw);letter-spacing:var(--s-ht);line-height:1.08;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+.site h2{font-size:clamp(1.9rem,4.6cqw,3.1rem)}
+.site h3{font-size:1.35rem;line-height:1.2}
+.site p,.site figure,.site dl,.site dd{margin:0}
+.site figure{overflow:hidden;border-radius:var(--s-r);background:var(--s-soft)}
+.site img{display:block;width:100%;height:100%;object-fit:cover}
+.s-wrap{max-width:1120px;margin-inline:auto;padding-inline:clamp(20px,5cqw,64px)}
+.s-sec{padding-block:clamp(52px,8cqw,104px);scroll-margin-top:64px}
+.s-eyebrow{font:700 .74rem/1.3 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--s-accent-ink)}
+.s-lead{color:var(--s-muted);font-size:1.06rem;max-width:58ch}
+.s-head{display:flex;flex-direction:column;gap:12px;margin-bottom:clamp(24px,4cqw,44px)}
+.s-btn{font:700 1rem/1 var(--ui);background:var(--s-accent);color:var(--s-on);border:0;border-radius:var(--s-btn-r);padding:16px 26px;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+.s-btn:hover{filter:brightness(1.08)}
+.s-link{font:600 .92rem var(--ui);background:none;border:0;padding:0;color:var(--s-accent-ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:left}
+
+/* barra di navigazione */
+.s-nav{position:sticky;top:0;z-index:6;background:color-mix(in srgb,var(--s-bg) 90%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--s-line)}
+.s-nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.s-brand{display:flex;align-items:center;gap:11px;font-weight:700;min-width:0}
+.s-brand img{height:38px;width:auto;max-width:170px;object-fit:contain}
+.s-mono{flex:none;width:38px;height:38px;border-radius:var(--s-btn-r);background:var(--s-accent);color:var(--s-on);display:grid;place-items:center;font:800 .85rem var(--ui);letter-spacing:.02em}
+.s-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-links{display:flex;align-items:center;gap:2px;flex:none}
+.s-links button{font:600 .92rem var(--ui);background:none;border:0;color:var(--s-ink);padding:9px 13px;border-radius:var(--s-btn-r);cursor:pointer}
+.s-links button:hover{background:var(--s-soft)}
+.s-links button.s-cta{background:var(--s-accent);color:var(--s-on);margin-left:8px;padding:10px 18px}
+
+/* copertina */
+.s-hero{position:relative;isolation:isolate;color:#fff;display:grid;align-items:end;min-height:clamp(460px,56cqw,680px)}
+.s-hero-in{width:100%}
+.s-hero-media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#1b2230}
+.s-hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,14,.5),rgba(8,10,14,0) 75%),linear-gradient(180deg,rgba(8,10,14,.12) 0%,rgba(8,10,14,.5) 42%,rgba(8,10,14,.9) 100%)}
+.s-hero-copy{padding-block:clamp(32px,6cqw,72px);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.s-hero .s-eyebrow{color:inherit;opacity:.92}
+.s-hero h1{font-size:clamp(2.5rem,8cqw,5.4rem);line-height:1}
+.s-place{font-size:clamp(1.1rem,2.3cqw,1.5rem)}
+.s-hero-actions{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin-top:12px}
+.s-count{font-weight:500;font-size:.98rem}
+.s-count b{font-weight:800;font-variant-numeric:tabular-nums}
+
+/* dati essenziali */
+.s-facts{border-bottom:1px solid var(--s-line)}
+.s-facts-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 32px;padding-block:28px}
+.s-fact{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 14px;align-items:start}
+.s-fact svg{width:22px;height:22px;grid-row:1/3;margin-top:3px;color:var(--s-accent-ink)}
+.s-fact dt{font:700 .72rem/1.3 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--s-muted)}
+.s-fact dd{font:var(--s-hw) 1.2rem/1.25 var(--s-display);letter-spacing:var(--s-ht)}
+
+/* il viaggio */
+.s-intro-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,6cqw,80px);align-items:center}
+.s-intro-text{display:flex;flex-direction:column;gap:16px}
+.s-intro figure{aspect-ratio:4/3}
+
+/* programma */
+.s-prog{background:var(--s-soft)}
+.s-days{list-style:none;margin:0;padding:0;display:grid}
+.s-day{display:grid;grid-template-columns:minmax(150px,230px) minmax(0,1fr);gap:8px 40px;padding-block:28px;border-top:1px solid var(--s-line)}
+.s-day:last-child{border-bottom:1px solid var(--s-line)}
+.s-day-when{display:flex;flex-direction:column;gap:6px}
+.s-day-n{font:700 .74rem/1.3 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--s-accent-ink)}
+.s-day-n b{font-weight:inherit}
+.s-day-date{font:italic 400 1.2rem/1.2 var(--s-display)}
+.s-day-body{display:flex;flex-direction:column;gap:12px}
+.s-day h3{font-size:1.6rem}
+.s-day ul{margin:0;padding:0;list-style:none;display:grid;gap:7px;color:var(--s-muted)}
+.s-day li li{display:flex;gap:12px;align-items:baseline}
+.s-day li li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--s-accent);transform:translateY(-2px)}
+
+.s-strip-in{display:grid;grid-template-columns:1.45fr 1fr;gap:12px;padding-block:12px}
+.s-strip figure{aspect-ratio:16/9}
+.s-strip figure+figure{aspect-ratio:auto}
+
+/* hotel */
+.s-hotel-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,6cqw,80px);align-items:center}
+.s-hotel-text{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.s-stars{color:var(--s-accent);letter-spacing:.18em;font-size:1rem;line-height:1}
+.s-chips{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.s-chips li{border:1px solid var(--s-line);border-radius:99px;padding:6px 14px;font-size:.88rem;font-weight:600;background:var(--s-bg)}
+.s-gal{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:1fr 1fr;gap:10px;aspect-ratio:5/4}
+.s-gal figure:first-child{grid-row:1/3}
+
+/* info utili */
+.s-info{background:var(--s-soft)}
+.s-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:28px 36px}
+.s-card{display:flex;flex-direction:column;gap:10px;border-top:2px solid var(--s-ink);padding-top:16px}
+.s-card p{color:var(--s-muted)}
+
+/* domande */
+.s-faq-in>*{max-width:800px}
+.s-faq details{border-top:1px solid var(--s-line)}
+.s-faq details:last-child{border-bottom:1px solid var(--s-line)}
+.s-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-weight:700;font-size:1.06rem}
+.s-faq summary::-webkit-details-marker{display:none}
+.s-faq summary::after{content:"+";font:400 1.6rem/1 var(--ui);color:var(--s-accent-ink);flex:none}
+.s-faq details[open] summary::after{content:"\2212"}
+.s-faq details p{color:var(--s-muted);padding-bottom:22px;max-width:62ch}
+
+/* iscrizione */
+.s-reg{background:var(--s-tint)}
+.s-reg-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5cqw,64px);align-items:start}
+.s-reg-text{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.s-meter{width:100%;max-width:340px;display:flex;flex-direction:column;gap:8px;font-weight:600;font-size:.95rem}
+.s-meter i{display:block;height:6px;border-radius:9px;background:color-mix(in srgb,var(--s-accent) 22%,transparent);overflow:hidden}
+.s-meter i::after{content:"";display:block;height:100%;width:var(--pct);background:var(--s-accent)}
+.s-form{background:#fff;color:#14171c;border-radius:calc(var(--s-r) + 4px);padding:clamp(20px,3.6cqw,38px);display:flex;flex-direction:column;gap:26px;box-shadow:0 24px 60px -36px rgba(10,20,40,.45)}
+.s-group{display:flex;flex-direction:column;gap:12px}
+.s-legend{font:700 .74rem/1.3 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--s-accent-ink)}
+.s-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}
+.s-grid .w2{grid-column:1/-1}
+.s-form label{display:flex;flex-direction:column;gap:6px;font-size:.86rem;font-weight:600;min-width:0}
+.s-form input,.s-form select{height:48px;border:1px solid #d3d8e0;border-radius:var(--s-btn-r);padding:0 13px;background:#fff;font-size:1rem;font-weight:500;width:100%;min-width:0;color:#14171c}
+.s-form input:focus,.s-form select:focus{outline:2px solid var(--s-accent);outline-offset:1px}
+.s-form label.s-check{flex-direction:row;align-items:flex-start;gap:11px;font-weight:500;color:#59626f;font-size:.9rem}
+.s-form .s-check input{width:19px;height:19px;flex:none;margin:2px 0 0;padding:0;accent-color:var(--s-accent)}
+.s-form .s-btn{align-self:flex-start}
+.s-done{align-items:flex-start;gap:16px}
+.s-done svg{width:52px;height:52px;padding:12px;border-radius:50%;background:var(--s-accent);color:var(--s-on)}
+.s-done dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:.95rem;width:100%}
+.s-done dt{color:#59626f}
+.s-done dd{font-weight:600}
+
+/* piede */
+.s-foot{background:#10131a;color:#b9c0cc;font-size:.92rem}
+.s-foot-in{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px;padding-block:44px}
+.s-foot strong{display:block;color:#fff;font:var(--s-hw) 1.35rem/1.2 var(--s-display);letter-spacing:var(--s-ht);margin-bottom:6px}
+.s-foot b{display:block;color:#fff;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.s-foot small{display:block;border-top:1px solid #262b36;padding-block:18px;color:#8a93a3;font-size:.8rem}
+
+/* ---------- stile ELEGANTE (classico) ---------- */
+.site[data-style=classico] .s-place{font-family:var(--s-display);font-style:italic}
+.site[data-style=classico] .s-hero-copy{text-shadow:0 1px 26px rgba(0,0,0,.4)}
+.site[data-style=classico] .s-hero .s-btn{text-shadow:none}
+
+/* ---------- stile MODERNO ---------- */
+.site[data-style=moderno]{--s-display:var(--ui);--s-hw:800;--s-ht:-.035em;--s-soft:#f3f5f9;--s-r:22px;--s-btn-r:99px}
+.site[data-style=moderno] .s-hero{color:var(--s-ink);min-height:0;align-items:center;background:linear-gradient(180deg,var(--s-tint),var(--s-bg))}
+.site[data-style=moderno] .s-hero-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,5cqw,64px);align-items:center;padding-block:clamp(32px,6cqw,76px)}
+.site[data-style=moderno] .s-hero-media{position:relative;inset:auto;z-index:0;border-radius:32px;aspect-ratio:1/1.04;box-shadow:0 36px 70px -36px color-mix(in srgb,var(--s-accent) 65%,#000)}
+.site[data-style=moderno] .s-hero-media::after{display:none}
+.site[data-style=moderno] .s-hero-copy{padding-block:0;gap:18px}
+.site[data-style=moderno] .s-hero .s-eyebrow{color:var(--s-accent-ink);opacity:1;background:#fff;border:1px solid var(--s-line);padding:8px 14px;border-radius:99px;letter-spacing:.08em}
+.site[data-style=moderno] .s-hero h1{font-size:clamp(2.3rem,6.4cqw,4.5rem)}
+.site[data-style=moderno] .s-place{color:var(--s-muted);font-weight:600}
+.site[data-style=moderno] .s-count{color:var(--s-muted)}
+.site[data-style=moderno] .s-count b{color:var(--s-ink)}
+.site[data-style=moderno] .s-facts{border:0}
+.site[data-style=moderno] .s-facts-in{background:#fff;border-radius:22px;box-shadow:0 14px 44px -22px rgba(20,30,60,.3),0 0 0 1px var(--s-line);padding:24px 28px}
+.site[data-style=moderno] .s-fact svg{width:40px;height:40px;padding:9px;border-radius:12px;background:var(--s-tint);margin-top:0}
+.site[data-style=moderno] .s-fact dd{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.site[data-style=moderno] .s-prog{background:var(--s-bg)}
+.site[data-style=moderno] .s-days{grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}
+.site[data-style=moderno] .s-day,.site[data-style=moderno] .s-day:last-child{display:flex;flex-direction:column;gap:16px;border:0;border-radius:22px;background:var(--s-soft);padding:26px}
+.site[data-style=moderno] .s-day-when{flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap}
+.site[data-style=moderno] .s-day-n{background:var(--s-accent);color:var(--s-on);padding:6px 12px;border-radius:99px;letter-spacing:.06em}
+.site[data-style=moderno] .s-day-date{font:600 .92rem var(--ui);color:var(--s-muted)}
+.site[data-style=moderno] .s-day h3{font-size:1.35rem}
+.site[data-style=moderno] .s-chips li{border:0;background:var(--s-tint);color:var(--s-accent-ink)}
+.site[data-style=moderno] .s-info-grid{gap:14px}
+.site[data-style=moderno] .s-card{border:0;background:#fff;border-radius:22px;padding:24px;box-shadow:0 0 0 1px var(--s-line)}
+.site[data-style=moderno] .s-card h3{font-size:1.15rem}
+.site[data-style=moderno] .s-form{border-radius:28px}
+.site[data-style=moderno] .s-form input,.site[data-style=moderno] .s-form select{border-radius:12px}
+
+/* ---------- stile DECISO ---------- */
+.site[data-style=deciso]{--s-display:"Bricolage Grotesque",var(--ui);--s-hw:800;--s-ht:-.035em;--s-r:0px;--s-btn-r:0px;--s-soft:#f2f2ef}
+.site[data-style=deciso] h2{text-transform:uppercase;font-size:clamp(2.2rem,6.6cqw,4.4rem);line-height:.95}
+.site[data-style=deciso] .s-hero{color:var(--s-on);min-height:clamp(500px,62cqw,740px)}
+.site[data-style=deciso] .s-hero-media{background:var(--s-accent)}
+.site[data-style=deciso] .s-hero-media img{filter:grayscale(1) contrast(1.2);mix-blend-mode:var(--s-blend,multiply)}
+.site[data-style=deciso] .s-hero-media::after{background:linear-gradient(180deg,transparent 30%,var(--s-veil,#000));opacity:.9}
+.site[data-style=deciso] .s-hero h1{font-size:clamp(2.8rem,10.5cqw,7.4rem);line-height:.9;text-transform:uppercase}
+.site[data-style=deciso] .s-place{font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.site[data-style=deciso] .s-hero .s-btn{background:var(--s-on);color:var(--s-accent-ink)}
+.site[data-style=deciso] .s-btn{text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;padding:18px 28px}
+.site[data-style=deciso] .s-facts{background:var(--s-accent);color:var(--s-on);border:0}
+.site[data-style=deciso] .s-fact svg,.site[data-style=deciso] .s-fact dt{color:inherit;opacity:.85}
+.site[data-style=deciso] .s-fact dd{font-size:1.2rem;line-height:1.12}
+.site[data-style=deciso] .s-prog{background:#0d0f13;color:#fff}
+.site[data-style=deciso] .s-prog .s-eyebrow{color:var(--s-accent-light)}
+.site[data-style=deciso] .s-day{grid-template-columns:minmax(120px,210px) minmax(0,1fr);border-color:rgba(255,255,255,.16);align-items:start}
+.site[data-style=deciso] .s-day-n span{display:none}
+.site[data-style=deciso] .s-day-n b{font-size:0}
+.site[data-style=deciso] .s-day-n b::before{content:attr(data-n);font:800 clamp(3.2rem,9cqw,6rem)/.85 var(--s-display);letter-spacing:-.04em;color:var(--s-accent-light)}
+.site[data-style=deciso] .s-day-date{font:700 .78rem var(--ui);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.site[data-style=deciso] .s-day h3{font-size:clamp(1.5rem,3.4cqw,2.3rem);text-transform:uppercase}
+.site[data-style=deciso] .s-day ul{color:rgba(255,255,255,.78)}
+.site[data-style=deciso] .s-day li li::before{background:var(--s-accent-light);border-radius:0}
+.site[data-style=deciso] .s-strip-in{max-width:none;padding:0;gap:0}
+.site[data-style=deciso] .s-chips li{border:0;border-radius:0;background:var(--s-ink);color:#fff;text-transform:uppercase;font-size:.76rem;letter-spacing:.08em;padding:8px 12px}
+.site[data-style=deciso] .s-card{border-top-width:6px;border-color:var(--s-accent)}
+.site[data-style=deciso] .s-card h3{text-transform:uppercase;font-size:1.25rem}
+.site[data-style=deciso] .s-reg{background:var(--s-accent);color:var(--s-on)}
+.site[data-style=deciso] .s-reg .s-reg-text .s-eyebrow,.site[data-style=deciso] .s-reg .s-reg-text .s-lead,.site[data-style=deciso] .s-reg .s-link{color:inherit}
+.site[data-style=deciso] .s-meter i{background:color-mix(in srgb,var(--s-on) 28%,transparent)}
+.site[data-style=deciso] .s-meter i::after{background:var(--s-on)}
+.site[data-style=deciso] .s-foot strong{text-transform:uppercase}
+
+/* ---------- il sito su schermi stretti (in base alla larghezza del sito, non della finestra) ---------- */
+@container site (max-width:820px){
+  .s-links button:not(.s-cta){display:none}
+  .s-facts-in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .s-intro-in,.s-hotel-in,.s-reg-in,.s-foot-in{grid-template-columns:minmax(0,1fr)}
+  .s-day,.site[data-style=deciso] .s-day{grid-template-columns:minmax(0,1fr)}
+  .site[data-style=moderno] .s-hero-in{grid-template-columns:minmax(0,1fr)}
+  .site[data-style=moderno] .s-hero-media{order:-1;aspect-ratio:16/11;border-radius:24px}
+  .s-gal{aspect-ratio:1/1}
+}
+@container site (max-width:520px){
+  .s-facts-in{gap:18px 16px}
+  .s-fact dd{font-size:1.05rem}
+  .s-grid{grid-template-columns:minmax(0,1fr)}
+  .s-strip-in{grid-template-columns:minmax(0,1fr)}
+  .s-strip figure+figure{aspect-ratio:16/9}
+  .s-form .s-btn{align-self:stretch;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* --- barra del viaggio aperto --- */
+.tripbar{background:#fff;border-bottom:1px solid var(--a-line);display:flex;align-items:center;gap:6px 14px;padding:0 20px;min-height:50px;flex:none}
+.tb-back{flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;color:var(--a-muted);text-decoration:none;font-size:1.4rem;line-height:1}
+.tb-back:hover{background:var(--a-bg);color:var(--a-ink)}
+.tb-name{display:flex;align-items:center;gap:9px;min-width:0}
+.tb-name i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--client)}
+.tb-name b{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-name span{color:var(--a-muted);font-size:.86rem;white-space:nowrap}
+.ttabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none;align-self:stretch}
+.ttabs::-webkit-scrollbar{display:none}
+.ttabs a{display:flex;align-items:center;gap:8px;padding:0 13px;color:var(--a-muted);text-decoration:none;font-weight:700;font-size:.9rem;white-space:nowrap;border-block:3px solid transparent}
+.ttabs a:hover{color:var(--a-ink)}
+.ttabs a[aria-current=page]{color:var(--a-ink);border-bottom-color:var(--a-accent)}
+.ttabs b{font-size:.72rem;font-weight:700;background:var(--a-bg);padding:1px 7px;border-radius:99px;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.tripbar{padding:0 8px;gap:2px;min-height:46px}.tb-name{display:none}.ttabs{margin-left:0;flex:1}.ttabs a{padding:0 8px;font-size:.86rem;gap:6px}.tb-back{width:26px}}
+
+/* --- elenco dei viaggi --- */
+.tripgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.tripcard{background:#fff;border:1px solid var(--a-line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.tc-cover{aspect-ratio:16/9;border:0;padding:12px;cursor:pointer;background:#223 center/cover;display:flex;align-items:flex-start}
+.tc-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.tc-body small{font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--a-muted)}
+.tc-body h3{margin:0;font-size:1.12rem;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+.tc-body p{margin:0;color:var(--a-muted);font-size:.88rem}
+.tc-body .bar{margin-top:10px}
+.tc-body .row{margin-top:auto;padding-top:14px}
+.pill.off{background:#e9ecf2;color:#465063}
+.tc-cover .pill{box-shadow:0 2px 10px rgba(0,0,0,.25)}
+td.vuoto{color:var(--a-muted);padding:22px 18px;white-space:normal}
+
+/* --- clienti --- */
+.clienti{display:grid;gap:12px}
+.cliente{background:#fff;border:1px solid var(--a-line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(230px,1.1fr) minmax(0,1.5fr) auto;gap:14px 28px;align-items:center}
+.cl{display:flex;align-items:center;gap:12px;min-width:0}
+.cl i{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font:800 .85rem var(--ui);font-style:normal}
+.cl img{flex:none;height:34px;width:auto;max-width:110px;object-fit:contain}
+.cl strong{display:block;font-size:1.02rem;font-weight:800}
+.cl small{display:block;color:var(--a-muted);font-size:.82rem;overflow-wrap:anywhere}
+.cl-num{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:8px 28px;margin:0}
+.cl-num dt{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--a-muted)}
+.cl-num dd{margin:2px 0 0;font-weight:700;font-variant-numeric:tabular-nums}
+.cl-num dd small{display:block;font-weight:500;color:var(--a-muted);font-size:.82rem}
+@media (max-width:860px){.cliente{grid-template-columns:minmax(0,1fr)}.cl-num{grid-template-columns:auto auto;}.cl-num div:last-child{grid-column:1/-1}}
+
+/* --- nuovo viaggio --- */
+dialog{max-height:calc(100dvh - 32px);overflow:auto}
+.basi{display:grid;gap:8px}
+.base{position:relative;cursor:pointer;display:block}
+.base input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.base-in{display:flex;align-items:center;gap:12px;border:2px solid var(--a-line);border-radius:12px;padding:9px 12px}
+.base input:checked+.base-in{border-color:var(--a-ink);background:#f6f7fa}
+.base input:focus-visible+.base-in{outline:2px solid var(--a-accent);outline-offset:2px}
+.base-in i{flex:none;width:56px;height:42px;border-radius:8px;background:#e3e7ef center/cover;display:grid;place-items:center;font-style:normal;font-size:1.05rem;line-height:1}
+.base-in i.sw-classico{background:linear-gradient(180deg,#93a0b3,#1b2230);color:#fff;font-family:"Fraunces",Georgia,serif}
+.base-in i.sw-moderno{background:color-mix(in srgb,var(--client) 12%,#fff);font-weight:800;letter-spacing:-.04em}
+.base-in i.sw-deciso{background:var(--client);color:var(--client-on);font-family:"Bricolage Grotesque",var(--ui);font-weight:800;text-transform:uppercase}
+.base-in b{display:block;font-size:.92rem;line-height:1.3}
+.base-in small{color:var(--a-muted);font-size:.8rem}
+.spunta{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.9rem;cursor:pointer}
+.spunta input{width:18px;height:18px;flex:none;accent-color:var(--a-dark)}
+.spunta input:disabled+span{color:var(--a-muted);font-weight:500}
+
+/* --- foto sostituibili nella scheda --- */
+.cover{position:relative;overflow:hidden}
+#fotos{grid-template-columns:repeat(3,1fr)}
+.cover.slot span{position:absolute;left:0;right:0;bottom:0;padding:12px 7px 4px;font-size:.68rem;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72));text-align:left}
+.cover i{position:absolute;top:4px;right:4px;width:19px;height:19px;border-radius:50%;background:rgba(14,22,48,.82);color:#fff;font:700 13px/19px var(--ui);text-align:center;font-style:normal}
+.cover i:hover{background:var(--a-accent)}
+
+/* --- nell'anteprima della scheda le foto si cambiano con un clic --- */
+#stage-host [data-foto]{cursor:pointer}
+#stage-host figure[data-foto]{position:relative}
+#stage-host [data-foto]::before{content:"Cambia foto";position:absolute;z-index:3;top:12px;right:12px;font:700 .78rem/1 var(--ui);letter-spacing:0;text-transform:none;background:rgba(14,22,48,.88);color:#fff;padding:8px 12px;border-radius:99px;opacity:0;transition:opacity .15s;pointer-events:none}
+#stage-host [data-foto]:hover::before{opacity:1}
+@media (hover:none){#stage-host [data-foto]::before{opacity:1}} /* su tablet e telefono non c'è il passaggio del mouse: l'etichetta resta visibile */
+
+/* --- sito: parti senza foto --- */
+.s-intro-in.solo,.s-hotel-in.solo{grid-template-columns:minmax(0,1fr)}
+.s-strip-in.uno{grid-template-columns:minmax(0,1fr)}
+.s-strip-in.uno figure{aspect-ratio:21/9}
+.s-gal[data-n="1"]{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);aspect-ratio:4/3}
+.s-gal[data-n="2"]{grid-template-rows:minmax(0,1fr);aspect-ratio:16/10}
+.s-gal[data-n="1"] figure:first-child,.s-gal[data-n="2"] figure:first-child{grid-row:auto}
+.site[data-cover=no] .s-hero{min-height:0;color:var(--s-on)}
+.site[data-cover=no] .s-hero-media{background:var(--s-accent)}
+.site[data-cover=no] .s-hero-media::after{display:none}
+.site[data-cover=no] .s-hero-copy{padding-block:clamp(48px,9cqw,110px);text-shadow:none}
+.site[data-cover=no]:not([data-style=moderno]) .s-hero .s-btn{background:var(--s-on);color:var(--s-accent-ink)}
+.site[data-cover=no][data-style=moderno] .s-hero{color:var(--s-ink)}
+.site[data-cover=no][data-style=moderno] .s-hero-in{grid-template-columns:minmax(0,1fr)}
+.site[data-cover=no][data-style=moderno] .s-hero-media{display:none}
+.site[data-cover=no][data-style=moderno] .s-hero-copy{padding-block:0}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#viaggi">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.4l6.9 2.7 2.7 6.9L21 3z"/></svg>
+    <span>Viaggi Aziendali</span><em>demo</em>
+  </a>
+  <nav class="tabs" id="tabs" aria-label="Sezioni">
+    <a href="#viaggi">Viaggi</a>
+    <a href="#clienti">Clienti</a>
+  </nav>
+</header>
+<div class="tripbar" id="tripbar">
+  <a class="tb-back" href="#viaggi" aria-label="Tutti i viaggi" title="Tutti i viaggi">&lsaquo;</a>
+  <div class="tb-name"><i></i><b id="tb-t"></b><span id="tb-c"></span></div>
+  <nav class="ttabs" id="ttabs" aria-label="Sezioni del viaggio">
+    <a href="#scheda">Scheda</a>
+    <a href="#sito">Sito</a>
+    <a href="#iscritti">Iscritti <b id="badge"></b></a>
+    <a href="#rooming">Rooming list</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- 1. SCHEDA VIAGGIO + ANTEPRIMA -->
+  <section class="builder" id="v-scheda">
+    <aside class="form" id="cfg">
+      <div class="mini" id="mini">
+        <small id="mini-k"></small><strong id="mini-t"></strong><span id="mini-s"></span>
+        <a class="btn" href="#sito">Apri il sito generato</a>
+      </div>
+
+      <p class="intro">Il sito per gli invitati nasce da questa scheda. Cambia stile, colore, foto o testi e si aggiorna subito.</p>
+
+      <details class="grp" open>
+        <summary>Viaggio</summary>
+        <div class="fields">
+          <label class="f w2">Azienda cliente<input data-k="cliente" id="f-cliente" autocomplete="off"></label>
+          <label class="f w2">Titolo del viaggio<input data-k="titolo" id="f-titolo" autocomplete="off"></label>
+          <label class="f w2">Destinazione<input data-k="dest" id="f-dest" autocomplete="off"></label>
+          <label class="f">Partenza<input data-k="dal" id="f-dal" type="date"></label>
+          <label class="f">Rientro<input data-k="al" id="f-al" type="date"></label>
+          <label class="f w2">Iscrizioni aperte fino al<input data-k="chiusura" id="f-chiusura" type="date"></label>
+        </div>
+      </details>
+
+      <details class="grp" open>
+        <summary>Aspetto <small>stile, colore, logo, foto</small></summary>
+        <div class="fields">
+          <div class="w2">
+            <p class="lbl">Stile del sito</p>
+            <div class="styles" role="radiogroup" aria-label="Stile del sito">
+              <label class="stylecard"><input type="radio" name="stile" value="classico" id="st-classico"><span class="sw sw-classico">Aa</span>Elegante</label>
+              <label class="stylecard"><input type="radio" name="stile" value="moderno" id="st-moderno"><span class="sw sw-moderno">Aa</span>Moderno</label>
+              <label class="stylecard"><input type="radio" name="stile" value="deciso" id="st-deciso"><span class="sw sw-deciso">Aa</span>Deciso</label>
+            </div>
+          </div>
+          <div class="w2">
+            <p class="lbl">Colore del cliente</p>
+            <div class="colors" id="colors">
+              <input type="color" data-k="colore" id="f-colore" aria-label="Scegli un colore">
+            </div>
+          </div>
+          <div class="w2">
+            <p class="lbl">Logo del cliente</p>
+            <div class="row">
+              <label class="btn ghost sm">Carica il logo<input type="file" accept="image/*" id="logo-file" hidden></label>
+              <button class="btn ghost sm" type="button" id="logo-del" hidden>Togli</button>
+              <p class="hint">Senza logo il sito usa le iniziali.</p>
+            </div>
+          </div>
+          <div class="w2">
+            <p class="lbl">Foto di copertina</p>
+            <div class="covers" id="covers"></div>
+          </div>
+          <div class="w2">
+            <p class="lbl">Altre foto del sito</p>
+            <div class="covers" id="fotos"></div>
+            <p class="hint" style="margin-top:8px">Tocca una foto per sostituirla con una tua. Dove manca la foto il sito mostra solo il testo.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="grp">
+        <summary>Testi e programma</summary>
+        <div class="fields">
+          <label class="f w2">Messaggio di benvenuto<textarea data-k="benvenuto" id="f-benvenuto"></textarea></label>
+          <label class="f w2">Programma<textarea data-k="prog" id="f-prog" style="min-height:150px"></textarea></label>
+          <p class="hint w2">Una riga per giorno: titolo, poi una barra verticale, poi le attività separate da punto e virgola. Le date le mette il sito.</p>
+        </div>
+      </details>
+
+      <details class="grp">
+        <summary>Hotel</summary>
+        <div class="fields">
+          <label class="f">Nome<input data-k="hotel" id="f-hotel" autocomplete="off"></label>
+          <label class="f">Stelle<select data-k="stelle" id="f-stelle"><option>3</option><option>4</option><option>5</option></select></label>
+          <label class="f w2">Descrizione<textarea data-k="hoteldesc" id="f-hoteldesc"></textarea></label>
+          <label class="f w2">Servizi (separati da virgola)<input data-k="servizi" id="f-servizi" autocomplete="off"></label>
+        </div>
+      </details>
+
+      <details class="grp">
+        <summary>Info utili</summary>
+        <div class="fields">
+          <label class="f w2">Una riga per informazione<textarea data-k="info" id="f-info" style="min-height:150px"></textarea></label>
+          <p class="hint w2">Titolo, barra verticale, testo.</p>
+        </div>
+      </details>
+
+      <details class="grp">
+        <summary>Modulo di iscrizione <small>cosa chiedere</small></summary>
+        <p class="hint" style="padding-bottom:12px">Nome ed email ci sono sempre. Il resto si sceglie viaggio per viaggio.</p>
+        <div class="checks" id="checks"></div>
+      </details>
+
+      <details class="grp">
+        <summary>Agenzia</summary>
+        <div class="fields">
+          <label class="f w2">Nome dell'agenzia<input data-k="agenzia" id="f-agenzia" autocomplete="off"></label>
+          <label class="f w2">Contatto per gli invitati<input data-k="contatto" id="f-contatto" autocomplete="off"></label>
+        </div>
+      </details>
+
+      <p class="note">Dati di esempio: azienda, hotel e persone sono inventati. Niente viene salvato o inviato: ricaricando la pagina si torna all'inizio.</p>
+    </aside>
+
+    <div class="stage">
+      <div class="stagebar">
+        <div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="url"></span></div>
+        <div class="seg" id="device" role="group" aria-label="Anteprima su">
+          <button type="button" data-device="desktop" aria-pressed="true">Computer</button>
+          <button type="button" data-device="phone" aria-pressed="false">Telefono</button>
+        </div>
+        <a class="btn dark sm" href="#sito">A tutto schermo</a>
+      </div>
+      <div class="frame" id="frame" data-device="desktop">
+        <div class="host" id="stage-host">
+          <div class="site-scroll" id="site-scroll">
+            <div class="site" id="site" data-style="classico">
+              <header class="s-nav" data-part="nav"></header>
+              <section class="s-hero"><div class="s-wrap s-hero-in"><div class="s-hero-copy" data-part="heroCopy"></div><div class="s-hero-media" data-part="heroMedia" data-foto="copertina"></div></div></section>
+              <section class="s-facts" data-part="facts"></section>
+              <section class="s-sec s-intro" data-part="intro"></section>
+              <section class="s-sec s-prog" id="s-programma" data-part="prog"></section>
+              <section class="s-strip" data-part="strip"></section>
+              <section class="s-sec s-hotel" id="s-hotel" data-part="hotel"></section>
+              <section class="s-sec s-info" id="s-info" data-part="info"></section>
+              <section class="s-sec s-faq" data-part="faq"></section>
+              <section class="s-sec s-reg" id="s-iscrizione" data-part="reg"></section>
+              <footer class="s-foot" data-part="foot"></footer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SITO A TUTTO SCHERMO -->
+  <section class="full" id="v-sito" hidden><div class="host" id="full-host"></div></section>
+
+  <!-- 3. ISCRITTI -->
+  <section class="page" id="v-iscritti" hidden>
+    <div class="pagehead">
+      <div><h2>Iscritti</h2><p>Ogni modulo compilato sul sito arriva qui. Si vede subito chi manca.</p></div>
+      <button class="btn" type="button" id="sollecita"></button>
+    </div>
+    <div class="stats" id="stats-isc"></div>
+    <div class="card">
+      <div class="cardhead"><h3>Invitati</h3><div class="chips" id="filtri"></div></div>
+      <div class="scroll"><table id="t-people"></table></div>
+    </div>
+  </section>
+
+  <!-- 4. ROOMING LIST -->
+  <section class="page" id="v-rooming" hidden>
+    <div class="pagehead">
+      <div><h2>Rooming list</h2><p>Si compila da sola con i dati degli iscritti, pronta da mandare all'hotel e a chi emette i voli.</p></div>
+    </div>
+    <div class="stats" id="stats-room"></div>
+    <div class="card">
+      <div class="cardhead"><div><h3>Camere per l'hotel</h3><p id="room-sub"></p></div>
+        <div class="row"><button class="btn ghost sm" type="button" data-copy="rooming">Copia</button><button class="btn dark sm" type="button" data-dl="rooming">Scarica per Excel</button></div></div>
+      <div class="scroll"><table id="t-rooming"></table></div>
+    </div>
+    <div class="card" id="p-voli">
+      <div class="cardhead"><div><h3>Passeggeri per i voli</h3><div class="chips" id="aeroporti" style="margin-top:8px"></div></div>
+        <div class="row"><button class="btn ghost sm" type="button" data-copy="voli">Copia</button><button class="btn dark sm" type="button" data-dl="voli">Scarica per Excel</button></div></div>
+      <div class="scroll"><table id="t-voli"></table></div>
+    </div>
+    <div class="card" id="p-diete">
+      <div class="cardhead"><div><h3>Esigenze alimentari</h3><p>Da girare al ristorante e all'hotel.</p></div></div>
+      <div class="scroll"><table id="t-diete"></table></div>
+    </div>
+  </section>
+
+  <!-- 5. VIAGGI -->
+  <section class="page" id="v-viaggi" hidden>
+    <div class="pagehead">
+      <div><h2>Viaggi</h2><p>Ogni viaggio ha il suo sito, i suoi iscritti e la sua rooming list. Uno nuovo parte da un modello o da un viaggio già fatto.</p></div>
+      <button class="btn" type="button" data-nuovo="">Nuovo viaggio</button>
+    </div>
+    <div class="chips" id="filtro-cliente"></div>
+    <div class="tripgrid" id="tripgrid"></div>
+  </section>
+
+  <!-- 6. CLIENTI -->
+  <section class="page" id="v-clienti" hidden>
+    <div class="pagehead">
+      <div><h2>Clienti</h2><p>Per ogni azienda restano logo, colore, referente e le persone che hanno già viaggiato. Al viaggio dopo si riparte da lì.</p></div>
+    </div>
+    <div class="clienti" id="clienti"></div>
+  </section>
+</main>
+
+<input type="file" accept="image/*" id="foto-file" hidden>
+<dialog id="dlg"><div class="dlg" id="dlg-body"></div></dialog>
+<div id="toast" role="status" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const foto = id => `foto/${id}.jpg`; // le foto di esempio stanno nella cartella foto/, accanto alla pagina
+// una foto è l'identificativo di una foto di esempio oppure un'immagine caricata dall'agenzia
+const fotoUrl = (v, w) => !v ? '' : v.startsWith('data:') ? v : foto(v, w);
+
+const COLORI = ['#0b4f9e', '#c8102e', '#0a7a52', '#e8590c', '#6d28d9', '#111827'];
+const CAMPI = [['camera', 'Tipo di camera'], ['accomp', 'Accompagnatore'], ['documento', 'Data di nascita e documento'], ['aeroporto', 'Aeroporto di partenza'], ['intoll', 'Esigenze alimentari']];
+const AEROPORTI = ['Milano Malpensa', 'Bergamo Orio al Serio', 'Roma Fiumicino'];
+const SLOT = [['viaggio', 'Il viaggio'], ['prog1', 'Programma'], ['prog2', 'Programma'], ['hotel1', 'Hotel'], ['hotel2', 'Hotel'], ['hotel3', 'Hotel']];
+const STILI = { classico: 'Elegante', moderno: 'Moderno', deciso: 'Deciso' };
+const TUTTI = { camera: true, accomp: true, documento: true, aeroporto: true, intoll: true };
+const AGENZIA = { agenzia: 'La tua agenzia', contatto: 'viaggi@agenzia.example' };
+// Foto di esempio (Unsplash, licenza gratuita). Nella versione vera le carica l'agenzia.
+const CENA = '1784466505273-9639531f8895', CAMERA = '1618773928121-c32242e63f39', HALL = '1782890790046-2aefb0b503cb';
+
+const data2 = d => d.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+const oggi = () => data2(new Date());
+const tra = g => { const d = new Date(); d.setDate(d.getDate() + g); return d; };
+const giorniFa = g => data2(tra(-g));
+const isoTra = g => { const d = tra(g); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const vuota = (nome, email) => ({ nome, email, data: '', camera: '', accomp: '', nascita: '', tipodoc: '', doc: '', aero: '', intoll: '' });
+// persone di esempio: [nome, iscritta quanti giorni fa (vuoto = non ancora), accompagnatore, esigenze]
+const gruppo = (dominio, tipodoc, righe) => righe.map(([nome, fa, accomp = '', intoll = ''], i) => {
+  const [n, c] = nome.toLowerCase().split(' '), p = vuota(nome, `${n[0]}.${c}@${dominio}`);
+  return fa == null ? p : Object.assign(p, {
+    data: giorniFa(fa), camera: accomp ? 'Doppia' : 'Singola', accomp, intoll, tipodoc, aero: AEROPORTI[i % 3],
+    nascita: `${String(1 + i * 11 % 28).padStart(2, '0')}/${String(1 + i * 5 % 12).padStart(2, '0')}/${1975 + i * 7 % 20}`,
+    doc: tipodoc === 'Passaporto' ? 'YA' + String(i + 1).padStart(7, '0') : 'CA' + String(i + 1).padStart(5, '0') + 'AA'
+  });
+});
+
+/* ---------- viaggi di esempio (aziende, hotel e persone inventati) ---------- */
+let seq = 0;
+const viaggi = [
+  {
+    id: ++seq, cliente: 'Aldani Meccanica', titolo: 'Convention commerciale 2027', dest: 'Lisbona, Portogallo',
+    dal: '2027-03-11', al: '2027-03-14', chiusura: '2027-01-31', stile: 'classico', colore: COLORI[0], logo: '',
+    copertine: ['1585208798174-6cedd86e019a', '1525207934214-58e69a8f8a3e', '1558102400-72da9fdbecae'], cover: 0, coverData: '',
+    foto: { viaggio: '1501927023255-9063be98970c', prog1: '1740607392547-e05ecb1a196f', prog2: CENA, hotel1: CAMERA, hotel2: '1551882547-ff40c63fe5fa', hotel3: HALL },
+    benvenuto: 'Quest\'anno la convention commerciale si tiene a Lisbona. In questa pagina trovi il programma dei quattro giorni, le informazioni sull\'hotel e il modulo per iscriverti.',
+    prog: 'Arrivo a Lisbona | Volo da Milano Malpensa; Trasferimento in hotel; Cena di benvenuto\nRiunione commerciale | Riunione in hotel; Pranzo; Visita guidata del centro storico\nSintra | Escursione a Sintra; Pomeriggio libero; Cena di gala\nRientro | Mattina libera; Trasferimento in aeroporto; Volo di rientro',
+    hotel: 'Hotel Miradouro', stelle: '4',
+    hoteldesc: 'Hotel quattro stelle nel centro di Lisbona, a 20 minuti di auto dall\'aeroporto. Le camere sono riservate per tutte le notti del viaggio, con colazione inclusa.',
+    servizi: 'Colazione inclusa, Wi-Fi gratuito, Piscina, Sala riunioni',
+    info: 'Documenti | Carta d\'identità valida per l\'espatrio oppure passaporto.\nBagaglio | Un bagaglio in stiva fino a 23 kg e un bagaglio a mano.\nClima a marzo | Temperature tra 11 e 18 °C. Porta una giacca per la sera.\nFuso orario | A Lisbona è un\'ora indietro rispetto all\'Italia.',
+    campi: { ...TUTTI }, ...AGENZIA,
+    // [nome, email, iscritto quanti giorni fa, camera, accompagnatore, nascita, tipo documento, numero, aeroporto, esigenze]
+    people: [
+      ['Marta Belotti', 'm.belotti@aldani.example', 15, 'Doppia', 'Luca Fenaroli', '14/05/1984', 'Carta d\'identità', 'CA00001AA', AEROPORTI[0], ''],
+      ['Giorgio Savoldi', 'g.savoldi@aldani.example', 15, 'Singola', '', '03/11/1976', 'Passaporto', 'YA0000002', AEROPORTI[0], 'Celiachia'],
+      ['Elena Carminati', 'e.carminati@aldani.example', 14, 'Singola', '', '22/08/1990', 'Carta d\'identità', 'CA00003AA', AEROPORTI[1], ''],
+      ['Paolo Zanchi', 'p.zanchi@aldani.example', 14, 'Doppia', 'Silvia Moretti', '09/01/1981', 'Carta d\'identità', 'CA00004AA', AEROPORTI[0], 'Accompagnatrice vegetariana'],
+      ['Chiara Rota', 'c.rota@aldani.example', 12, 'Singola', '', '30/06/1993', 'Passaporto', 'YA0000005', AEROPORTI[2], ''],
+      ['Davide Ghilardi', 'd.ghilardi@aldani.example', 8, 'Singola', '', '17/12/1979', 'Carta d\'identità', 'CA00006AA', AEROPORTI[0], 'Intolleranza al lattosio'],
+      ['Sara Locatelli', 's.locatelli@aldani.example', 6, 'Doppia', 'Marco Pesenti', '25/03/1988', 'Carta d\'identità', 'CA00007AA', AEROPORTI[1], ''],
+      ['Andrea Ferri', 'a.ferri@aldani.example', 2, 'Singola', '', '11/09/1985', 'Carta d\'identità', 'CA00008AA', AEROPORTI[0], ''],
+      ['Nicola Brembilla', 'n.brembilla@aldani.example'], ['Francesca Vitali', 'f.vitali@aldani.example'],
+      ['Roberto Gamba', 'r.gamba@aldani.example'], ['Ilaria Cortesi', 'i.cortesi@aldani.example']
+    ].map(([nome, email, data = '', camera = '', accomp = '', nascita = '', tipodoc = '', doc = '', aero = '', intoll = '']) =>
+      ({ nome, email, data: data === '' ? '' : giorniFa(data), camera, accomp, nascita, tipodoc, doc, aero, intoll }))
+  },
+  {
+    id: ++seq, cliente: 'Lumera Cosmetici', titolo: 'Kick-off 2027', dest: 'Reykjavík, Islanda',
+    dal: '2027-02-04', al: '2027-02-07', chiusura: '2026-12-18', stile: 'moderno', colore: COLORI[4], logo: '',
+    copertine: ['1488415032361-b7e238421f1b'], cover: 0, coverData: '',
+    foto: { viaggio: '1606130503037-6a8ef67c9d2d', prog1: '1462993340984-49bd9e0f32dd', prog2: '', hotel1: HALL, hotel2: CAMERA, hotel3: '' },
+    benvenuto: 'Il kick-off 2027 si tiene a Reykjavík. In questa pagina trovi il programma, le informazioni sull\'hotel e il modulo per iscriverti.',
+    prog: 'Arrivo a Reykjavík | Volo da Milano Malpensa; Trasferimento in hotel; Cena di benvenuto\nKick-off | Riunione plenaria; Pranzo; Pomeriggio alla laguna geotermale\nCircolo d\'Oro | Escursione a Thingvellir, Geysir e Gullfoss; Cena di gala; Uscita serale per l\'aurora boreale\nRientro | Mattina libera; Trasferimento in aeroporto; Volo di rientro',
+    hotel: 'Hotel Faxa', stelle: '4',
+    hoteldesc: 'Hotel quattro stelle sul porto di Reykjavík, a 45 minuti dall\'aeroporto di Keflavík. Colazione inclusa.',
+    servizi: 'Colazione inclusa, Wi-Fi gratuito, Sala riunioni, Spa',
+    info: 'Documenti | Carta d\'identità valida per l\'espatrio oppure passaporto.\nAbbigliamento | Giacca pesante, guanti e scarpe impermeabili. Per la laguna serve il costume.\nClima a febbraio | Temperature tra -3 e 3 °C, con vento.\nFuso orario | In Islanda è un\'ora indietro rispetto all\'Italia.',
+    campi: { ...TUTTI, accomp: false }, ...AGENZIA,
+    people: gruppo('lumera.example', 'Carta d\'identità', [['Federica Lumera', 9], ['Matteo Vigani', 8], ['Alice Bonetti', 6, '', 'Vegetariana'], ['Simone Carrara', 5], ['Giada Mazza', 3], ['Cristian Lodetti', 1],
+      ['Veronica Suardi'], ['Fabio Tironi'], ['Noemi Gritti'], ['Daniele Cortinovis'], ['Martina Azzola'], ['Riccardo Zenoni'], ['Beatrice Milesi'], ['Omar Ravasio']])
+  },
+  {
+    id: ++seq, cliente: 'Corvesi Impianti', titolo: 'Viaggio premio rete vendita 2026', dest: 'Marrakech, Marocco',
+    dal: '2026-10-15', al: '2026-10-18', chiusura: '2026-09-05', stile: 'deciso', colore: COLORI[3], logo: '',
+    copertine: ['1597212618440-806262de4f6b'], cover: 0, coverData: '',
+    foto: { viaggio: '1587974928442-77dc3e0dba72', prog1: '1535191198992-fe460a2d0af1', prog2: CENA, hotel1: '1624804823268-7d5454caa8c8', hotel2: '1705765278530-f0c3f363304e', hotel3: CAMERA },
+    benvenuto: 'Il viaggio premio 2026 per la rete vendita è a Marrakech. In questa pagina trovi il programma, le informazioni sull\'hotel e il modulo per iscriverti.',
+    prog: 'Arrivo a Marrakech | Volo da Bergamo Orio al Serio; Trasferimento in hotel; Cena in terrazza\nMedina | Visita guidata della medina e dei souk; Pranzo; Pomeriggio libero\nDeserto | Escursione in fuoristrada; Giro in cammello; Cena di gala sotto le stelle\nRientro | Mattina libera; Trasferimento in aeroporto; Volo di rientro',
+    hotel: 'Hotel Jardin Atlas', stelle: '5',
+    hoteldesc: 'Hotel cinque stelle con giardino e piscina, a dieci minuti dalla medina. Colazione inclusa.',
+    servizi: 'Colazione inclusa, Piscina, Spa, Wi-Fi gratuito',
+    info: 'Documenti | Passaporto in corso di validità.\nValuta | Dirham marocchino. Nei souk si paga quasi sempre in contanti.\nClima a ottobre | Temperature tra 15 e 28 °C.\nFuso orario | A Marrakech è un\'ora indietro rispetto all\'Italia.',
+    campi: { ...TUTTI }, ...AGENZIA,
+    people: gruppo('corvesi.example', 'Passaporto', [['Stefano Corvesi', 98, 'Marina Corvesi'], ['Laura Bettoni', 97], ['Mirko Salvi', 95, 'Elena Salvi'], ['Elisa Fratus', 94, '', 'Vegetariana'], ['Giovanni Paris', 92],
+      ['Michela Zambelli', 90, 'Dario Zambelli'], ['Luca Agazzi', 88], ['Serena Mora', 86, '', 'Allergia alla frutta a guscio'], ['Tiziano Rondi', 84], ['Anna Capelli', 80]])
+  }
+];
+const REFERENTI = {
+  'Aldani Meccanica': ['Paola Rinaldi', 'Direzione commerciale', 'p.rinaldi@aldani.example'],
+  'Lumera Cosmetici': ['Federica Lumera', 'Marketing', 'f.lumera@lumera.example'],
+  'Corvesi Impianti': ['Stefano Corvesi', 'Titolare', 's.corvesi@corvesi.example']
+};
+// modelli: stile, traccia del programma e campi del modulo già impostati; destinazione, hotel e foto li mette l'agenzia
+const MODELLI = [
+  { nome: 'Convention aziendale', stile: 'classico', nota: 'Plenaria, cena di gala e rientro', campi: { ...TUTTI },
+    prog: 'Arrivo | Trasferimento in hotel; Cena di benvenuto\nConvention | Lavori in plenaria; Pranzo; Cena di gala\nRientro | Mattina libera; Trasferimento in aeroporto' },
+  { nome: 'Viaggio premio', stile: 'deciso', nota: 'Escursioni e tempo libero, con accompagnatore', campi: { ...TUTTI },
+    prog: 'Arrivo | Trasferimento in hotel; Cena di benvenuto\nEscursione | Visita guidata; Pranzo; Pomeriggio libero\nGiornata libera | Attività a scelta; Cena di gala\nRientro | Trasferimento in aeroporto' },
+  { nome: 'Meeting e formazione', stile: 'moderno', nota: 'Aula, attività di gruppo, senza accompagnatori', campi: { ...TUTTI, accomp: false },
+    prog: 'Arrivo | Trasferimento in hotel; Apertura dei lavori; Cena\nFormazione | Sessioni in aula; Pranzo; Attività di gruppo\nRientro | Sessione conclusiva; Trasferimento in aeroporto' }
+];
+
+let trip = viaggi[0], people = trip.people; // il viaggio aperto
+
+/* ---------- date e testi derivati ---------- */
+const D = s => { const d = new Date(s + 'T12:00'); return isNaN(d) ? null : d; };
+const fmt = (d, o) => d ? d.toLocaleDateString('it-IT', o) : '';
+const lunga = s => fmt(D(s), { day: 'numeric', month: 'long', year: 'numeric' });
+const corta = s => fmt(D(s), { day: '2-digit', month: '2-digit', year: 'numeric' });
+const maiusc = s => s.charAt(0).toUpperCase() + s.slice(1);
+const notti = (t = trip) => { const a = D(t.dal), b = D(t.al); return a && b ? Math.max(0, Math.round((b - a) / 864e5)) : 0; };
+const giorniA = s => { const d = D(s); if (!d) return null; const t = new Date(); t.setHours(12, 0, 0, 0); return Math.round((d - t) / 864e5); };
+function periodo(t = trip) {
+  const a = D(t.dal), b = D(t.al);
+  if (!a || !b) return '';
+  const o = { day: 'numeric', month: 'long', year: 'numeric' };
+  return a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear() ? a.getDate() + '–' + fmt(b, o) : fmt(a, { day: 'numeric', month: 'long' }) + ' – ' + fmt(b, o);
+}
+const citta = (t = trip) => t.dest.split(',')[0].trim();
+const slug = (t = trip) => (t.cliente + ' ' + citta(t) + ' ' + t.dal.slice(0, 4)).toLowerCase().normalize('NFD').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+const iniziali = nome => nome.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const copertina = (w, t = trip) => t.cover === 'file' ? t.coverData : t.copertine[t.cover] ? foto(t.copertine[t.cover], w) : '';
+const righe = t => t.split('\n').map(r => r.trim()).filter(Boolean).map(r => { const [a, ...b] = r.split('|'); return [a.trim(), b.join('|').trim()]; });
+const iscritti = (t = trip) => t.people.filter(p => p.data);
+const quota = (t = trip) => t.people.length ? 100 * iscritti(t).length / t.people.length : 0;
+// testo leggibile sopra il colore del cliente: scuro sui colori chiari, bianco sugli altri
+const sopra = hex => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) * 299 + (n >> 8 & 255) * 587 + (n & 255) * 114) / 1000 > 150 ? '#14171c' : '#fff'; };
+function stato(t) {
+  const fine = giorniA(t.al), ch = giorniA(t.chiusura);
+  if (fine == null) return ['Bozza', 'off'];
+  if (fine < 0) return ['Concluso', 'off'];
+  return ch != null && ch < 0 ? ['Iscrizioni chiuse', 'warn'] : ['Iscrizioni aperte', 'ok'];
+}
+
+const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const ICONE = {
+  quando: svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+  dove: svg('<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'),
+  hotel: svg('<path d="M3 19V7M3 15h18v4M21 15v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11.5" r="2"/>'),
+  entro: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  fatto: svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>')
+};
+
+/* ---------- sito generato: ogni parte si ridisegna solo se cambia; senza foto o senza hotel la parte sparisce ---------- */
+let ultima = null; // ultima iscrizione fatta dal sito, per la schermata di conferma
+const fig = (k, w) => { const u = fotoUrl(trip.foto[k], w); return u ? `<figure data-foto="${k}"><img src="${u}" alt="" loading="lazy"></figure>` : ''; };
+const haHotel = () => !!(trip.hotel || trip.hoteldesc || trip.foto.hotel1 || trip.foto.hotel2 || trip.foto.hotel3);
+const parti = {
+  nav: () => `<div class="s-wrap s-nav-in">
+      <div class="s-brand">${trip.logo ? `<img src="${trip.logo}" alt="${esc(trip.cliente)}">` : `<span class="s-mono">${esc(iniziali(trip.cliente))}</span><span class="s-name">${esc(trip.cliente)}</span>`}</div>
+      <nav class="s-links"><button type="button" data-go="s-programma">Programma</button>${haHotel() ? '<button type="button" data-go="s-hotel">Hotel</button>' : ''}<button type="button" data-go="s-info">Info utili</button><button type="button" class="s-cta" data-go="s-iscrizione">Iscriviti</button></nav>
+    </div>`,
+  heroMedia: () => copertina(1800) ? `<img src="${copertina(1800)}" alt="">` : '',
+  heroCopy: () => {
+    const n = giorniA(trip.dal);
+    return `<p class="s-eyebrow">${esc([trip.cliente, periodo()].filter(Boolean).join(' · '))}</p><h1>${esc(trip.titolo)}</h1><p class="s-place">${esc(trip.dest)}</p>
+      <div class="s-hero-actions"><button class="s-btn" type="button" data-go="s-iscrizione">Iscriviti al viaggio</button>${n > 0 ? `<span class="s-count"><b>${n}</b> giorni alla partenza</span>` : ''}</div>`;
+  },
+  facts: () => `<div class="s-wrap"><dl class="s-facts-in">${[['quando', 'Quando', periodo()], ['dove', 'Dove', trip.dest], ['hotel', 'Hotel', trip.hotel], ['entro', 'Iscrizioni entro', lunga(trip.chiusura)]]
+    .map(([i, l, v]) => `<div class="s-fact">${ICONE[i]}<dt>${l}</dt><dd>${esc(v || 'Da definire')}</dd></div>`).join('')}</dl></div>`,
+  intro: () => {
+    const f = fig('viaggio', 1100);
+    return `<div class="s-wrap s-intro-in${f ? '' : ' solo'}">
+      <div class="s-intro-text"><p class="s-eyebrow">Il viaggio</p><h2>${citta() ? `${notti() + 1} giorni a ${esc(citta())}` : 'Il viaggio in breve'}</h2><p class="s-lead">${esc(trip.benvenuto)}</p></div>${f}
+    </div>`;
+  },
+  prog: () => {
+    const a = D(trip.dal);
+    return `<div class="s-wrap"><div class="s-head"><p class="s-eyebrow">Programma</p><h2>Giorno per giorno</h2></div><ol class="s-days">${righe(trip.prog).map(([t, r], i) => {
+      const d = a ? new Date(a.getTime() + i * 864e5) : null, voci = r.split(';').map(x => x.trim()).filter(Boolean);
+      return `<li class="s-day"><div class="s-day-when"><span class="s-day-n"><span>Giorno</span> <b data-n="${String(i + 1).padStart(2, '0')}">${i + 1}</b></span>${d ? `<span class="s-day-date">${maiusc(fmt(d, { weekday: 'long', day: 'numeric', month: 'long' }))}</span>` : ''}</div>
+        <div class="s-day-body"><h3>${esc(t)}</h3>${voci.length ? `<ul>${voci.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div></li>`;
+    }).join('')}</ol></div>`;
+  },
+  strip: () => { const a = fig('prog1', 1300), b = fig('prog2', 900); return a || b ? `<div class="s-wrap s-strip-in${a && b ? '' : ' uno'}">${a}${b}</div>` : ''; },
+  hotel: () => {
+    if (!haHotel()) return '';
+    const g = fig('hotel1', 1000) + fig('hotel2', 700) + fig('hotel3', 700), n = ['hotel1', 'hotel2', 'hotel3'].filter(k => trip.foto[k]).length;
+    return `<div class="s-wrap s-hotel-in${n ? '' : ' solo'}">
+      <div class="s-hotel-text"><p class="s-eyebrow">Hotel</p><p class="s-stars" aria-label="${esc(trip.stelle)} stelle">${'★'.repeat(+trip.stelle || 0)}</p><h2>${esc(trip.hotel || 'Hotel da definire')}</h2><p class="s-lead">${esc(trip.hoteldesc)}</p>
+        <ul class="s-chips">${trip.servizi.split(',').map(s => s.trim()).filter(Boolean).map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+      ${n ? `<div class="s-gal" data-n="${n}">${g}</div>` : ''}
+    </div>`;
+  },
+  info: () => righe(trip.info).length ? `<div class="s-wrap"><div class="s-head"><p class="s-eyebrow">Info utili</p><h2>Prima di partire</h2></div>
+      <div class="s-info-grid">${righe(trip.info).map(([t, x]) => `<div class="s-card"><h3>${esc(t)}</h3><p>${esc(x)}</p></div>`).join('')}</div></div>` : '',
+  faq: () => {
+    const c = trip.campi, q = [];
+    if (lunga(trip.chiusura)) q.push(['Fino a quando posso iscrivermi?', `Le iscrizioni chiudono il ${lunga(trip.chiusura)}. Dopo quella data scrivi a ${trip.contatto}.`]);
+    if (c.accomp) q.push(['Posso portare un accompagnatore?', `Sì. Scrivi il suo nome nel modulo di iscrizione${c.camera ? ' e la camera diventa doppia' : ''}.`]);
+    q.push(['Devo prenotare io il volo?', `No, i voli li prenota l'agenzia.${c.aeroporto ? ' Nel modulo scegli l\'aeroporto da cui parti.' : ''}`]);
+    q.push(['A chi mi rivolgo per una modifica?', `Scrivi a ${trip.contatto}.`]);
+    return `<div class="s-wrap s-faq-in"><div class="s-head"><p class="s-eyebrow">Domande frequenti</p><h2>Le cose che si chiedono sempre</h2></div>${q.map(([d, r]) => `<details><summary>${esc(d)}</summary><p>${esc(r)}</p></details>`).join('')}</div>`;
+  },
+  reg: () => {
+    const c = trip.campi, ok = iscritti().length, ch = giorniA(trip.chiusura), chiuse = ch != null && ch < 0;
+    const testo = `<div class="s-reg-text"><p class="s-eyebrow">Iscrizione</p><h2>Conferma la tua presenza</h2>
+        <p class="s-lead">${chiuse ? 'Il modulo non è più disponibile.' : `Compila il modulo${lunga(trip.chiusura) ? ' entro il ' + esc(lunga(trip.chiusura)) : ''}. I dati servono all'agenzia per prenotare hotel e voli.`}</p>
+        ${people.length ? `<div class="s-meter" style="--pct:${quota()}%"><span>${ok} invitati su ${people.length} ${chiuse ? 'si sono iscritti' : 'si sono già iscritti'}</span><i></i></div>` : ''}
+        ${ultima || chiuse ? '' : '<button type="button" class="s-link" data-esempio>Compila con dati di esempio</button>'}</div>`;
+    if (chiuse) return `<div class="s-wrap s-reg-in">${testo}<div class="s-form s-done"><h3>Iscrizioni chiuse</h3>
+        <p style="color:#59626f">Le iscrizioni si sono chiuse il ${esc(lunga(trip.chiusura))}. Per informazioni scrivi a ${esc(trip.contatto)}.</p></div></div>`;
+    if (ultima) return `<div class="s-wrap s-reg-in">${testo}<div class="s-form s-done">${ICONE.fatto}<h3>Iscrizione registrata</h3>
+        <dl><dt>Nome</dt><dd>${esc(ultima.nome)}</dd>${c.camera ? `<dt>Camera</dt><dd>${esc(ultima.camera)}${ultima.accomp ? ' con ' + esc(ultima.accomp) : ''}</dd>` : ''}${c.aeroporto ? `<dt>Partenza da</dt><dd>${esc(ultima.aero)}</dd>` : ''}</dl>
+        <p style="color:#59626f">Nella demo non parte nessuna mail di conferma. I dati sono già nel pannello dell'agenzia.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="s-btn" href="#rooming" style="text-decoration:none">Vedi la rooming list</a><button type="button" class="s-link" data-ancora>Fai un'altra iscrizione</button></div></div></div>`;
+    return `<div class="s-wrap s-reg-in">${testo}<form class="s-form" id="reg">
+        <div class="s-group"><p class="s-legend">I tuoi dati</p><div class="s-grid">
+          <label>Nome e cognome<input id="r-nome" required autocomplete="off"></label><label>Email<input id="r-email" type="email" required autocomplete="off"></label></div></div>
+        ${c.documento ? `<div class="s-group"><p class="s-legend">Documento di viaggio</p><div class="s-grid">
+          <label>Data di nascita<input id="r-nascita" type="date" required></label><label>Tipo di documento<select id="r-tipodoc"><option>Carta d'identità</option><option>Passaporto</option></select></label>
+          <label class="w2">Numero del documento<input id="r-doc" required autocomplete="off"></label></div></div>` : ''}
+        ${c.camera || c.accomp ? `<div class="s-group"><p class="s-legend">Camera</p><div class="s-grid">
+          ${c.camera ? '<label>Tipo di camera<select id="r-camera"><option>Singola</option><option>Doppia</option></select></label>' : ''}
+          ${c.accomp ? '<label>Accompagnatore<input id="r-accomp" placeholder="Nome e cognome, se viene" autocomplete="off"></label>' : ''}</div></div>` : ''}
+        ${c.aeroporto || c.intoll ? `<div class="s-group"><p class="s-legend">Volo e ristorazione</p><div class="s-grid">
+          ${c.aeroporto ? `<label>Aeroporto di partenza<select id="r-aero">${AEROPORTI.map(a => `<option>${a}</option>`).join('')}</select></label>` : ''}
+          ${c.intoll ? '<label>Esigenze alimentari<input id="r-intoll" placeholder="Allergie, intolleranze, diete" autocomplete="off"></label>' : ''}</div></div>` : ''}
+        <label class="s-check"><input type="checkbox" id="r-privacy" required>Acconsento al trattamento dei miei dati per l'organizzazione del viaggio.</label>
+        <button class="s-btn" type="submit">Invia l'iscrizione</button>
+      </form></div>`;
+  },
+  foot: () => `<div class="s-wrap"><div class="s-foot-in">
+      <div><strong>${esc(trip.titolo)}</strong>${esc([trip.dest, periodo()].filter(Boolean).join(' · '))}</div>
+      <div><b>Organizzazione</b>${esc(trip.agenzia)}</div>
+      <div><b>Assistenza agli invitati</b>${esc(trip.contatto)}</div>
+    </div><small>Sito di esempio. Foto: Unsplash.</small></div>`
+};
+const disegnate = {};
+function disegnaSito() {
+  const site = $('#site'), chiaro = sopra(trip.colore) !== '#fff';
+  site.dataset.style = trip.stile;
+  site.dataset.cover = copertina(1800) ? 'si' : 'no';
+  site.style.setProperty('--s-accent', trip.colore);
+  site.style.setProperty('--s-on', sopra(trip.colore));
+  site.style.setProperty('--s-blend', chiaro ? 'screen' : 'multiply');
+  site.style.setProperty('--s-veil', chiaro ? trip.colore : `color-mix(in srgb, ${trip.colore} 78%, #000)`);
+  for (const k in parti) {
+    const html = parti[k](), el = site.querySelector(`[data-part="${k}"]`);
+    if (disegnate[k] !== html) { disegnate[k] = html; el.innerHTML = html; if (el.tagName === 'SECTION') el.hidden = !html; }
+  }
+}
+
+/* ---------- pannello: iscritti e rooming list ---------- */
+const se = (cond, v) => cond ? [v] : [];
+const MANCA = 'da richiedere';
+const tabella = (cols, rows) => '<thead><tr>' + cols.map(c => `<th>${c}</th>`).join('') + '</tr></thead><tbody>' + (rows.length ?
+  rows.map(r => '<tr>' + r.map(v => `<td>${v === MANCA ? `<span class="pill warn">${MANCA}</span>` : esc(v)}</td>`).join('') + '</tr>').join('') :
+  `<tr><td class="vuoto" colspan="${cols.length}">Ancora nessuna iscrizione.</td></tr>`) + '</tbody>';
+const dati = {
+  rooming() {
+    const c = trip.campi;
+    return {
+      nome: 'rooming-list', cols: ['Camera', ...se(c.camera, 'Tipologia'), 'Ospite 1', ...se(c.accomp, 'Ospite 2'), 'Check-in', 'Check-out', 'Notti', ...se(c.intoll, 'Note')],
+      rows: iscritti().map((p, i) => [i + 1, ...se(c.camera, p.camera || 'Singola'), p.nome, ...se(c.accomp, p.accomp), corta(trip.dal), corta(trip.al), notti(), ...se(c.intoll, p.intoll)])
+    };
+  },
+  voli() {
+    const c = trip.campi;
+    const pax = iscritti().flatMap(p => c.accomp && p.accomp ? [p, { nome: p.accomp, nascita: MANCA, tipodoc: MANCA, doc: MANCA, aero: p.aero }] : [p]);
+    return {
+      nome: 'lista-passeggeri', pax, cols: ['Passeggero', ...se(c.documento, 'Data di nascita'), ...se(c.documento, 'Documento'), ...se(c.documento, 'Numero'), ...se(c.aeroporto, 'Partenza da')],
+      rows: pax.map(p => [p.nome, ...se(c.documento, p.nascita), ...se(c.documento, p.tipodoc), ...se(c.documento, p.doc), ...se(c.aeroporto, p.aero)])
+    };
+  }
+};
+let filtro = 'tutti';
+function disegnaPannello() {
+  const c = trip.campi, ok = iscritti(), mancano = people.length - ok.length;
+  document.documentElement.style.setProperty('--client', trip.colore);
+  document.documentElement.style.setProperty('--client-on', sopra(trip.colore));
+  $('#url').innerHTML = `viaggi.tuaagenzia.it/<b>${esc(slug())}</b>`;
+  $('#badge').textContent = `${ok.length}/${people.length}`;
+  $('#tb-t').textContent = trip.titolo;
+  $('#tb-c').textContent = trip.cliente;
+  $('#mini-k').textContent = 'Sito pronto · ' + trip.cliente;
+  $('#mini-t').textContent = trip.titolo;
+  $('#mini-s').textContent = [trip.dest, periodo()].filter(Boolean).join(' · ');
+  for (const b of document.querySelectorAll('.swatch')) b.setAttribute('aria-pressed', b.dataset.color === trip.colore);
+  $('#logo-del').hidden = !trip.logo;
+
+  // foto: si ridisegnano solo quando cambiano (quelle caricate sono stringhe pesanti)
+  const firma = [trip.id, trip.cover, trip.coverData.length, ...SLOT.map(([k]) => (trip.foto[k] || '').length + (trip.foto[k] || '').slice(-16))].join('|');
+  if (disegnate.foto !== firma) {
+    disegnate.foto = firma;
+    $('#covers').innerHTML = trip.copertine.map((id, i) => `<button type="button" class="cover" data-cover="${i}" aria-pressed="${trip.cover === i}" style="background-image:url('${foto(id, 320)}')" aria-label="Foto di esempio ${i + 1}"></button>`).join('') +
+      (trip.coverData ? `<button type="button" class="cover slot" data-scegli="copertina" aria-pressed="${trip.cover === 'file'}" style="background-image:url('${trip.coverData}')" aria-label="Foto caricata"><i data-togli="copertina" title="Togli">×</i></button>`
+        : '<button type="button" class="cover up" data-scegli="copertina"><span>Carica<br>una foto</span></button>');
+    $('#fotos').innerHTML = SLOT.map(([k, l]) => {
+      const u = fotoUrl(trip.foto[k], 320);
+      return u ? `<button type="button" class="cover slot" data-scegli="${k}" style="background-image:url('${u}')" aria-label="Cambia la foto: ${l}"><span>${l}</span><i data-togli="${k}" title="Togli">×</i></button>`
+        : `<button type="button" class="cover up" data-scegli="${k}"><span>+ ${l}</span></button>`;
+    }).join('');
+    $('#mini').style.backgroundImage = copertina(900) ? `url("${copertina(900)}")` : 'none';
+  }
+
+  // iscritti
+  const gg = giorniA(trip.chiusura), doppie = ok.filter(p => c.camera && p.camera === 'Doppia').length;
+  $('#stats-isc').innerHTML = `
+    <div class="stat"><span>Iscritti</span><b>${ok.length} su ${people.length}</b><div class="bar"><i style="width:${quota()}%"></i></div></div>
+    <div class="stat"><span>Da sollecitare</span><b>${mancano}</b><small>${mancano ? 'non hanno ancora compilato il modulo' : people.length ? 'hanno risposto tutti' : 'nessun invitato in elenco'}</small></div>
+    <div class="stat"><span>Camere</span><b>${ok.length}</b><small>${ok.length - doppie} singole, ${doppie} doppie</small></div>
+    <div class="stat"><span>Chiusura iscrizioni</span><b>${esc(fmt(D(trip.chiusura), { day: 'numeric', month: 'short' }) || '—')}</b><small>${gg == null ? 'data da definire' : gg > 0 ? `tra ${gg} giorni` : gg === 0 ? 'oggi' : 'già chiuse'}</small></div>`;
+  $('#sollecita').textContent = mancano ? `Sollecita i ${mancano} che mancano` : people.length ? 'Tutti iscritti' : 'Nessun invitato';
+  $('#sollecita').disabled = !mancano;
+  $('#filtri').innerHTML = [['tutti', `Tutti (${people.length})`], ['si', `Iscritti (${ok.length})`], ['no', `Da sollecitare (${mancano})`]]
+    .map(([k, l]) => `<button class="chip" type="button" data-filtro="${k}" aria-pressed="${filtro === k}">${l}</button>`).join('');
+  const lista = people.filter(p => filtro === 'tutti' || (filtro === 'si') === !!p.data), nc = 3 + !!c.camera + !!c.accomp + !!c.aeroporto;
+  $('#t-people').innerHTML = `<thead><tr><th>Invitato</th><th>Stato</th><th>Iscritto il</th>${c.camera ? '<th>Camera</th>' : ''}${c.accomp ? '<th>Accompagnatore</th>' : ''}${c.aeroporto ? '<th>Partenza da</th>' : ''}</tr></thead><tbody>` +
+    (lista.length ? lista.map(p => `<tr><td><strong>${esc(p.nome)}</strong>${p.nuovo ? '<span class="pill new">Nuova</span>' : ''}<small>${esc(p.email)}</small></td>
+      <td>${p.data ? '<span class="pill ok">Iscritto</span>' : '<span class="pill warn">Da sollecitare</span>'}</td><td>${esc(p.data)}</td>
+      ${c.camera ? `<td>${esc(p.camera)}</td>` : ''}${c.accomp ? `<td>${esc(p.accomp)}</td>` : ''}${c.aeroporto ? `<td>${esc(p.aero)}</td>` : ''}</tr>`).join('')
+      : `<tr><td class="vuoto" colspan="${nc}">${people.length ? 'Nessuno in questo elenco.' : 'Ancora nessun invitato. Chi compila il modulo sul sito arriva qui.'}</td></tr>`) + '</tbody>';
+
+  // rooming list
+  const r = dati.rooming(), v = dati.voli();
+  $('#stats-room').innerHTML = `
+    <div class="stat"><span>Camere</span><b>${ok.length}</b><small>${ok.length - doppie} singole, ${doppie} doppie</small></div>
+    <div class="stat"><span>Ospiti</span><b>${v.pax.length}</b><small>${ok.length} invitati, ${v.pax.length - ok.length} accompagnatori</small></div>
+    <div class="stat"><span>Soggiorno</span><b>${notti()} notti</b><small>${corta(trip.dal) ? `dal ${esc(corta(trip.dal))} al ${esc(corta(trip.al))}` : 'date da definire'}</small></div>
+    <div class="stat"><span>Pernottamenti</span><b>${v.pax.length * notti()}</b><small>ospiti per notti</small></div>`;
+  $('#room-sub').textContent = [trip.hotel, trip.dest].filter(Boolean).join(', ') || 'Hotel da definire';
+  $('#t-rooming').innerHTML = tabella(r.cols, r.rows);
+  $('#p-voli').hidden = !(c.documento || c.aeroporto);
+  $('#t-voli').innerHTML = tabella(v.cols, v.rows);
+  const per = {}; if (c.aeroporto) for (const p of v.pax) per[p.aero] = (per[p.aero] || 0) + 1;
+  $('#aeroporti').innerHTML = Object.entries(per).map(([a, n]) => `<span class="tag">${esc(a)} · ${n}</span>`).join('');
+  const diete = ok.filter(p => p.intoll);
+  $('#p-diete').hidden = !c.intoll || !diete.length;
+  $('#t-diete').innerHTML = tabella(['Invitato', 'Esigenza'], diete.map(p => [p.nome, p.intoll]));
+}
+const aggiorna = () => { disegnaSito(); disegnaPannello(); };
+
+/* ---------- elenco dei viaggi e clienti ---------- */
+// l'anagrafica di un cliente è l'insieme delle persone dei suoi viaggi, senza doppioni
+const anagrafica = cliente => { const m = new Map(); for (const v of viaggi) if (v.cliente === cliente) for (const p of v.people) m.set(p.email || p.nome, p); return [...m.values()]; };
+const clienti = () => { const m = new Map(); for (const v of viaggi) { if (!m.has(v.cliente)) m.set(v.cliente, { nome: v.cliente, colore: v.colore, logo: v.logo, viaggi: [] }); m.get(v.cliente).viaggi.push(v); } return [...m.values()]; };
+let soloCliente = '';
+function disegnaElenco() {
+  const lista = viaggi.filter(v => !soloCliente || v.cliente === soloCliente);
+  $('#filtro-cliente').innerHTML = soloCliente ? `<span class="tag">Cliente: ${esc(soloCliente)}</span><button class="chip" type="button" data-tutti>Mostra tutti i viaggi</button>` : '';
+  $('#tripgrid').innerHTML = lista.map(v => {
+    const c = copertina(700, v), [st, cls] = stato(v);
+    return `<article class="tripcard">
+      <button type="button" class="tc-cover" data-apri="${v.id}" style="${c ? `background-image:url('${c}')` : `background:${v.colore}`}" aria-label="Apri ${esc(v.titolo)}"><span class="pill ${cls}">${st}</span></button>
+      <div class="tc-body"><small>${esc(v.cliente)}</small><h3>${esc(v.titolo)}</h3><p>${esc([v.dest || 'Destinazione da definire', periodo(v)].filter(Boolean).join(' · '))}</p>
+        <div class="bar"><i style="width:${quota(v)}%"></i></div><p>${iscritti(v).length} iscritti su ${v.people.length} invitati · stile ${STILI[v.stile]}</p>
+        <div class="row"><button class="btn sm" type="button" data-apri="${v.id}">Apri</button><button class="btn ghost sm" type="button" data-base="${v.id}">Usa come base</button></div></div>
+    </article>`;
+  }).join('');
+  $('#clienti').innerHTML = clienti().map(c => {
+    const r = REFERENTI[c.nome], u = c.viaggi[0];
+    return `<article class="cliente">
+      <div class="cl">${c.logo ? `<img src="${c.logo}" alt="">` : `<i style="background:${c.colore};color:${sopra(c.colore)}">${esc(iniziali(c.nome))}</i>`}
+        <div><strong>${esc(c.nome)}</strong><small>${r ? esc(`${r[0]} · ${r[1]} · ${r[2]}`) : 'Referente da inserire'}</small></div></div>
+      <dl class="cl-num"><div><dt>Viaggi</dt><dd>${c.viaggi.length}</dd></div><div><dt>Persone in anagrafica</dt><dd>${anagrafica(c.nome).length}</dd></div>
+        <div><dt>Ultimo viaggio</dt><dd>${esc(u.titolo)}<small>${esc(periodo(u) || 'date da definire')}</small></dd></div></dl>
+      <div class="row"><button class="btn sm" type="button" data-nuovo="${esc(c.nome)}">Nuovo viaggio</button><button class="btn ghost sm" type="button" data-vedi="${esc(c.nome)}">Vedi i viaggi</button></div>
+    </article>`;
+  }).join('');
+}
+
+/* ---------- nuovo viaggio: da un modello o da un viaggio già fatto ---------- */
+function nuovoDa({ cliente = clienti()[0].nome, base = 'm0' } = {}) {
+  const scelta = (v, on, mini, titolo, sotto) => `<label class="base"><input type="radio" name="base" value="${v}"${on ? ' checked' : ''}><span class="base-in">${mini}<span><b>${titolo}</b><small>${sotto}</small></span></span></label>`;
+  $('#dlg-body').innerHTML = `<h3>Nuovo viaggio</h3>
+    <label class="f">Cliente<select id="n-cliente">${clienti().map(c => `<option${c.nome === cliente ? ' selected' : ''}>${esc(c.nome)}</option>`).join('')}<option value=""${cliente ? '' : ' selected'}>Nuovo cliente</option></select></label>
+    <div><p class="lbl">Parti da un modello</p><div class="basi">${MODELLI.map((m, i) => scelta('m' + i, base === 'm' + i, `<i class="sw-${m.stile}">Aa</i>`, m.nome, `Stile ${STILI[m.stile]} · ${m.nota}`)).join('')}</div></div>
+    <div><p class="lbl">Oppure da un viaggio già fatto</p><div class="basi">${viaggi.map(v => scelta('v' + v.id, base === 'v' + v.id, `<i style="${copertina(160, v) ? `background-image:url('${copertina(160, v)}')` : `background:${v.colore}`}"></i>`, esc(v.titolo), esc(`${v.cliente} · ${v.dest || 'destinazione da definire'}`))).join('')}</div></div>
+    <label class="spunta"><input type="checkbox" id="n-invita"><span id="n-invita-t"></span></label>
+    <div class="row" style="justify-content:flex-end"><button class="btn ghost" type="button" data-chiudi>Annulla</button><button class="btn" type="button" data-crea>Crea il viaggio</button></div>`;
+  invitoAnagrafica();
+  $('#dlg').showModal();
+}
+function invitoAnagrafica() {
+  const c = $('#n-cliente').value, n = c ? anagrafica(c).length : 0;
+  $('#n-invita').disabled = !n; $('#n-invita').checked = n > 0;
+  $('#n-invita-t').textContent = n ? `Invita le ${n} persone di ${c} già in anagrafica` : 'Per questo cliente non c\'è ancora nessuno in anagrafica';
+}
+function crea() {
+  const cliente = $('#n-cliente').value, base = document.querySelector('input[name=base]:checked').value, invita = $('#n-invita').checked;
+  const marca = clienti().find(c => c.nome === cliente);
+  let v, detto;
+  if (base[0] === 'm') {
+    const m = MODELLI[+base.slice(1)];
+    v = { titolo: m.nome, dest: '', dal: isoTra(120), al: isoTra(119 + righe(m.prog).length), chiusura: isoTra(60), stile: m.stile, colore: COLORI[0], copertine: [], cover: 'file', coverData: '', foto: {},
+      benvenuto: 'In questa pagina trovi il programma, le informazioni sull\'hotel e il modulo per iscriverti.', prog: m.prog, hotel: '', stelle: '4', hoteldesc: '', servizi: '',
+      info: 'Documenti | Carta d\'identità valida per l\'espatrio oppure passaporto, secondo la destinazione.', campi: { ...m.campi }, agenzia: trip.agenzia, contatto: trip.contatto };
+    detto = `Viaggio creato dal modello «${m.nome}». Mancano destinazione, hotel e foto.`;
+  } else {
+    const da = viaggi.find(x => x.id === +base.slice(1)), piuUnAnno = s => s ? (+s.slice(0, 4) + 1) + s.slice(4) : '';
+    v = JSON.parse(JSON.stringify({ ...da, people: [] }));
+    Object.assign(v, { titolo: da.titolo.replace(/20\d\d/g, a => +a + 1), dal: piuUnAnno(da.dal), al: piuUnAnno(da.al), chiusura: piuUnAnno(da.chiusura) });
+    detto = `Viaggio creato da «${da.titolo}», con le date spostate di un anno. Controlla programma e hotel.`;
+  }
+  Object.assign(v, { id: ++seq, cliente: cliente || 'Nuovo cliente', logo: marca ? marca.logo : '' });
+  if (marca) v.colore = marca.colore;
+  v.people = invita && cliente ? anagrafica(cliente).map(p => vuota(p.nome, p.email)) : [];
+  viaggi.unshift(v);
+  $('#dlg').close();
+  apri(v);
+  avviso(detto);
+}
+
+/* ---------- avvisi ---------- */
+let tt;
+function avviso(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 4200); }
+
+/* ---------- scheda viaggio ---------- */
+$('#colors').insertAdjacentHTML('afterbegin', COLORI.map(c => `<button type="button" class="swatch" data-color="${c}" style="background:${c}" aria-label="Colore ${c}"></button>`).join(''));
+$('#checks').innerHTML = CAMPI.map(([k, l]) => `<label><input type="checkbox" data-c="${k}">${l}</label>`).join('');
+function sincronizza() { // porta nella scheda i dati del viaggio aperto
+  for (const el of document.querySelectorAll('[data-k]')) el.value = trip[el.dataset.k];
+  for (const el of document.querySelectorAll('[data-c]')) el.checked = trip.campi[el.dataset.c];
+  $('#st-' + trip.stile).checked = true;
+}
+function apri(v, vista = 'scheda') {
+  trip = v; people = v.people; ultima = null; filtro = 'tutti';
+  sincronizza(); aggiorna();
+  location.hash === '#' + vista ? vai() : location.hash = vista;
+}
+
+$('#cfg').addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.k) trip[t.dataset.k] = t.value;
+  else if (t.dataset.c) trip.campi[t.dataset.c] = t.checked;
+  else if (t.name === 'stile') trip.stile = t.value;
+  else return;
+  aggiorna();
+});
+let quale = ''; // quale foto si sta sostituendo
+const scegli = k => { quale = k; $('#foto-file').click(); };
+$('#cfg').addEventListener('click', e => {
+  const q = s => e.target.closest(s), s = q('.swatch'), c = q('.cover[data-cover]'), via = q('[data-togli]'), f = q('[data-scegli]');
+  if (s) { trip.colore = s.dataset.color; $('#f-colore').value = trip.colore; return aggiorna(); }
+  if (c) { trip.cover = +c.dataset.cover; return aggiorna(); }
+  if (via) {
+    if (via.dataset.togli === 'copertina') { trip.coverData = ''; trip.cover = trip.copertine.length ? 0 : 'file'; } else trip.foto[via.dataset.togli] = '';
+    return aggiorna();
+  }
+  if (f) {
+    if (f.dataset.scegli === 'copertina' && trip.coverData && trip.cover !== 'file') { trip.cover = 'file'; return aggiorna(); }
+    scegli(f.dataset.scegli);
+  }
+});
+// le foto caricate vengono ridotte a 1800 px: quelle di un telefono pesano troppo per stare nella pagina
+async function riduci(file, max = 1800) {
+  try {
+    const b = await createImageBitmap(file), k = Math.min(1, max / Math.max(b.width, b.height));
+    const c = Object.assign(document.createElement('canvas'), { width: Math.round(b.width * k), height: Math.round(b.height * k) });
+    c.getContext('2d').drawImage(b, 0, 0, c.width, c.height);
+    return c.toDataURL('image/jpeg', .85);
+  } catch { return new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(file); }); }
+}
+$('#foto-file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const d = await riduci(f);
+  if (quale === 'copertina') { trip.coverData = d; trip.cover = 'file'; } else trip.foto[quale] = d;
+  aggiorna();
+});
+$('#logo-file').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const r = new FileReader(); r.onload = () => { trip.logo = r.result; aggiorna(); }; r.readAsDataURL(f);
+});
+$('#logo-del').addEventListener('click', () => { trip.logo = ''; aggiorna(); });
+$('#device').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  $('#frame').dataset.device = b.dataset.device;
+  for (const x of $('#device').children) x.setAttribute('aria-pressed', x === b);
+});
+
+/* ---------- sito: navigazione interna, foto e iscrizione ---------- */
+$('#site').addEventListener('click', e => {
+  const go = e.target.closest('[data-go]'), f = e.target.closest('[data-foto]');
+  if (go) return document.getElementById(go.dataset.go).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (e.target.closest('[data-ancora]')) { ultima = null; return aggiorna(); }
+  if (e.target.closest('[data-esempio]')) {
+    const p = people.find(x => !x.data) || { nome: 'Giulia Sala', email: 'g.sala@esempio.example' };
+    const metti = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    metti('r-nome', p.nome); metti('r-email', p.email); metti('r-nascita', '1987-04-18'); metti('r-tipodoc', 'Carta d\'identità'); metti('r-doc', 'CA00009AA');
+    metti('r-camera', 'Doppia'); metti('r-accomp', 'Laura Mazzoleni'); metti('r-aero', AEROPORTI[1]); metti('r-intoll', 'Nessuna');
+    $('#r-privacy').checked = true;
+    return;
+  }
+  // nell'anteprima della scheda un clic su una foto la sostituisce; nel sito a tutto schermo no
+  if (f && f.closest('#stage-host') && !e.target.closest('button,a,input,select,label')) scegli(f.dataset.foto);
+});
+$('#site').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const p = { nome: v('r-nome'), email: v('r-email'), data: oggi(),
+    camera: v('r-camera') || 'Singola', accomp: v('r-accomp'), nascita: v('r-nascita') ? corta(v('r-nascita')) : '', tipodoc: v('r-tipodoc'), doc: v('r-doc'), aero: v('r-aero'),
+    intoll: /^(nessun[ao]?|no|-)$/i.test(v('r-intoll')) ? '' : v('r-intoll'), nuovo: true };
+  if (p.accomp && trip.campi.camera) p.camera = 'Doppia';
+  const gia = people.find(x => x.nome.toLowerCase() === p.nome.toLowerCase());
+  gia ? Object.assign(gia, p) : people.push(p);
+  ultima = p;
+  aggiorna();
+  document.getElementById('s-iscrizione').scrollIntoView({ block: 'start' });
+  avviso(`Iscrizione di ${p.nome} arrivata nel pannello.`);
+});
+
+/* ---------- iscritti: filtro e sollecito ---------- */
+$('#filtri').addEventListener('click', e => { const b = e.target.closest('[data-filtro]'); if (b) { filtro = b.dataset.filtro; disegnaPannello(); } });
+$('#sollecita').addEventListener('click', () => {
+  const m = people.filter(p => !p.data);
+  $('#dlg-body').innerHTML = `<h3>Sollecito a ${m.length} ${m.length === 1 ? 'persona' : 'persone'}</h3>
+    <div class="chips">${m.map(p => `<span class="tag">${esc(p.nome)}</span>`).join('')}</div>
+    <div class="mail"><span class="meta">Oggetto</span><strong>${esc(trip.titolo)}, manca la tua iscrizione</strong>
+      <span class="meta">Messaggio</span>
+      <span>Ciao ${esc(m[0].nome.split(' ')[0])},<br>per ${esc(trip.titolo)}${citta() ? ' a ' + esc(citta()) : ''}${periodo() ? ` (${esc(periodo())})` : ''} non abbiamo ancora ricevuto la tua iscrizione.<br>Il modulo richiede due minuti: viaggi.tuaagenzia.it/${esc(slug())}${lunga(trip.chiusura) ? `<br>Le iscrizioni chiudono il ${esc(lunga(trip.chiusura))}.` : ''}<br><br>${esc(trip.agenzia)}</span></div>
+    <p class="hint">Questa è la mail che partirebbe, una per persona con il suo nome. Nella demo non viene inviato nulla.</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn dark" type="button" data-chiudi>Chiudi</button></div>`;
+  $('#dlg').showModal();
+});
+$('#dlg').addEventListener('click', e => { if (e.target.closest('[data-chiudi]') || e.target === $('#dlg')) $('#dlg').close(); });
+$('#dlg').addEventListener('change', e => { if (e.target.id === 'n-cliente') invitoAnagrafica(); });
+
+/* ---------- pulsanti delle pagine: viaggi, clienti, rooming list ---------- */
+document.addEventListener('click', e => {
+  const q = s => e.target.closest(s);
+  let b;
+  if ((b = q('[data-apri]'))) return apri(viaggi.find(v => v.id === +b.dataset.apri));
+  if ((b = q('[data-base]'))) { const v = viaggi.find(x => x.id === +b.dataset.base); return nuovoDa({ cliente: v.cliente, base: 'v' + v.id }); }
+  if ((b = q('[data-nuovo]'))) { const c = b.dataset.nuovo || soloCliente, u = viaggi.find(v => v.cliente === c); return nuovoDa(u ? { cliente: c, base: 'v' + u.id } : {}); }
+  if ((b = q('[data-vedi]'))) { soloCliente = b.dataset.vedi; return location.hash === '#viaggi' ? disegnaElenco() : location.hash = 'viaggi'; }
+  if (q('[data-tutti]')) { soloCliente = ''; return disegnaElenco(); }
+  if (q('[data-crea]')) return crea();
+  if (!(b = q('[data-copy],[data-dl]'))) return;
+  const d = dati[b.dataset.copy || b.dataset.dl](), righeD = [d.cols, ...d.rows];
+  if (b.dataset.dl) {
+    // CSV con punto e virgola e BOM: Excel in italiano lo apre già in colonne, con gli accenti giusti
+    const csv = '﻿' + righeD.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n');
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })), download: `${d.nome}-${slug()}.csv` });
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    return avviso('File scaricato. Si apre con Excel.');
+  }
+  const tsv = righeD.map(r => r.join('\t')).join('\n'), ok = () => avviso('Copiata. Si incolla in Excel o in una mail.');
+  const ripiego = () => { const t = Object.assign(document.createElement('textarea'), { value: tsv }); document.body.append(t); t.select(); document.execCommand('copy'); t.remove(); ok(); };
+  navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(tsv).then(ok, ripiego) : ripiego();
+});
+
+/* ---------- navigazione: le prime quattro viste stanno dentro un viaggio, le altre due sono elenchi ---------- */
+const VISTE = ['scheda', 'sito', 'iscritti', 'rooming', 'viaggi', 'clienti'];
+function vai() {
+  const v = VISTE.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'scheda', dentro = VISTE.indexOf(v) < 4;
+  const segna = (nav, href) => { for (const a of nav.children) a.getAttribute('href') === href ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); };
+  for (const n of VISTE) $('#v-' + n).hidden = n !== v;
+  $('#tripbar').hidden = !dentro;
+  segna($('#ttabs'), '#' + v);
+  segna($('#tabs'), v === 'clienti' ? '#clienti' : '#viaggi');
+  if (dentro) $(v === 'sito' ? '#full-host' : '#stage-host').append($('#site-scroll')); else disegnaElenco();
+  $('#main').scrollTop = 0;
+}
+addEventListener('hashchange', vai);
+sincronizza(); aggiorna(); vai();
+</script>
+</body>
+</html>
